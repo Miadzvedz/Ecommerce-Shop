@@ -2,7 +2,7 @@
 
 ### Предисловие
 Этот проект создаётся исключительно в целях практического обучения.
-За основу обучающего материала был взят курс [.NET 8 Microservices: DDD, CQRS, Vertical/Clean Architecture](https://www.udemy.com/share/103noG3@JeJIOVqEiW6vJ8wnqrHBbueghQXipY7GeiXbOzOdLXLljK1U-ePUe4vnx7cqypVKBQ==/)
+За основу обучающего материала был взят курс [.NET 8 Microservices: DDD, CQRS, Vertical/Clean Architecture](https://www.udemy.com/course/microservices-architecture-and-implementation-on-dotnet/?couponCode=KEEPLEARNING)
 В последующем многие вещи будут переписаны и улучшены с учётом собственых суждений. 
 
 
