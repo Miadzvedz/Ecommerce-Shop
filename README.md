@@ -265,7 +265,7 @@ MediatR идеально подходит для разделения опера
    
 </details>
 
-<details><summary>Get basket</summary>
+<details><summary>Получить корзину</summary>
   
    ![image](https://github.com/user-attachments/assets/50f00dc2-46ca-4be1-9e72-dda8781370a5)
    
