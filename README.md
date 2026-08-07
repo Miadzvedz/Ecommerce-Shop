@@ -252,7 +252,7 @@ MediatR идеально подходит для разделения опера
 | GET     | /health                   | Проверка базы данных на доступность |
 | GET     | /basket/{userId}          | Получить корзину для пользователя   |
 | POST    | /basket                   | Создать или обновить корзину        |
-| DELETE  | /basket/{userId}          | RУдалить корзину                    | 
+| DELETE  | /basket/{userId}          | Удалить корзину                    | 
 
 
 ### Пример запросов
@@ -305,7 +305,7 @@ For unit testing I have the following nugget packages:
 ![image](https://github.com/user-attachments/assets/7eab2800-053b-4e2a-bf75-90334b09abd0)
 
 ### Интеграционные тесты
-Для интеграционного тестирования я использую следующие пакеты NuGet.:
+Для интеграционного тестирования я использую следующие пакеты NuGet:
  - [xUnit](https://www.nuget.org/packages/xunit)
  - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions.AspNetCore.Mvc)
  - [Microsoft.AspNetCore.Mvc.Testing](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Testing)
