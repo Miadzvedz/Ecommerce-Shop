@@ -34,7 +34,7 @@ internal class CatalogInitialData : IInitialData
                 "Colour: White\n" +
                 "Made in the USA",
                 ImageFile = "product-1.png",
-                Category = new() { "Guitar", "Electric Guitar", "Gibson" },
+                Category = ["Guitar", "Electric Guitar", "Gibson"],
                 Price = 2188M
             },
             new()
@@ -53,7 +53,7 @@ internal class CatalogInitialData : IInitialData
                 "Walnut Viking bridge\n" +
                 "Colour: Black high gloss",
                 ImageFile = "product-2.png",
-                Category = new() { "Guitar", "Acoustic Guitar", "Fender" },
+                Category = ["Guitar", "Acoustic Guitar", "Fender"],
                 Price = 145M
             },
             new()
@@ -69,7 +69,7 @@ internal class CatalogInitialData : IInitialData
                 "Black hardware\n" +
                 "Colour: Vintage Sunburst",
                 ImageFile = "product-2.png",
-                Category = new() { "Guitar", "Electric Bass", "Epiphone"},
+                Category = ["Guitar", "Electric Bass", "Epiphone"],
                 Price = 369M
             },
 

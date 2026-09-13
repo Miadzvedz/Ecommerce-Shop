@@ -34,7 +34,7 @@ builder.Services.AddSwaggerGen(options =>
         Contact = new OpenApiContact
         {
             Name = "Alexander Medved",
-            Url = new Uri("https://github.com/Grizzly-Alex")
+            Url = new Uri("https://github.com/Miadzvedz")
         }
     });
 });
@@ -53,8 +53,8 @@ builder.Services.AddStackExchangeRedisCache(setup =>
 });
 
 builder.Services.AddHealthChecks()
-    .AddMongoDb(dbSettings.ConnectionString)
-    .AddRedis(cacherSettings.ConnectionString);
+    .AddMongoDb(dbSettings.ConnectionString!)
+    .AddRedis(cacherSettings.ConnectionString!);
 #endregion
 
 var app = builder.Build();

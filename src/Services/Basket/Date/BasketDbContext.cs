@@ -2,11 +2,11 @@
 
 internal class BasketDbContext : IMongoDbContext<ShoppingCart>
 {
-    public IMongoCollection<ShoppingCart> collection { get; }
+    public IMongoCollection<ShoppingCart> Collection { get; }
 
     public BasketDbContext(IMongoClient client, IOptions<MongoDbSettings> settings)
     {
-        collection = client.GetDatabase(settings.Value.DatabaseName)
+        Collection = client.GetDatabase(settings.Value.DatabaseName)
             .GetCollection<ShoppingCart>(settings.Value.BasketsCollectionName);
     }
 }

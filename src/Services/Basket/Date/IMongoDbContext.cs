@@ -2,6 +2,6 @@
 {
     internal interface IMongoDbContext<T> where T : class, new()
     {
-        public IMongoCollection<T> collection { get; }
+        public IMongoCollection<T> Collection { get; }
     }
 }

@@ -1,6 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
-var dbConnectionString = builder.Configuration.GetConnectionString("Database")!;
+string dbConnectionString = builder.Configuration.GetConnectionString("Database")!;
 
 
 builder.Host.UseSerilog((context, configuration) =>
@@ -33,7 +33,7 @@ builder.Services.AddSwaggerGen(options =>
         Contact = new OpenApiContact
         {
             Name = "Alexander Medved",
-            Url = new Uri("https://github.com/Grizzly-Alex")
+            Url = new Uri("https://github.com/Miadzvedz")
         }
     });
 });

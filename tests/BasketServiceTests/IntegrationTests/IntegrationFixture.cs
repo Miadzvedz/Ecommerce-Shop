@@ -2,21 +2,24 @@
 
 public class IntegrationFixture : IAsyncLifetime
 {
-    private MongoDbRunner _runner;
-    public HttpClient Client { get; set; }
-    public MockApp App { get; set; }
+    private MongoDbRunner? _runner;
+    public required HttpClient Client { get; set; }
+    public required MockApp App { get; set; }
     public IServiceProvider Services => App.Services;
 
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
         _runner = MongoDbRunner.Start();
         App = new MockApp(_runner.ConnectionString);
         Client = App.CreateClient();
+
+        return Task.CompletedTask;
     }
 
     public Task DisposeAsync()
     {
         _runner?.Dispose();
+
         return Task.CompletedTask;
     }
 }
@@ -57,7 +60,7 @@ public class IntegrationTest(IntegrationFixture integrationFixture) : IAsyncLife
 {
     public IntegrationFixture IntegrationFixture { get; } = integrationFixture;
     public HttpClient Client => IntegrationFixture.Client;
-    public IServiceScope Scope { get; set; }
+    public required IServiceScope Scope { get; set; }
     public IServiceProvider Services => Scope.ServiceProvider;
 
 

@@ -6,7 +6,7 @@ internal class BasketRepository(IMongoDbContext<ShoppingCart> context) : IBasket
     {
         var filterDefinition = Builders<ShoppingCart>.Filter.Eq(x => x.UserId, id);
 
-        var result = await context.collection.Find(filterDefinition).FirstOrDefaultAsync(token);
+        var result = await context.Collection.Find(filterDefinition).FirstOrDefaultAsync(token);
 
         return result; 
 
@@ -22,7 +22,7 @@ internal class BasketRepository(IMongoDbContext<ShoppingCart> context) : IBasket
 
         var optionsDefinition = new UpdateOptions { IsUpsert = true };  
 
-        var result = await context.collection.UpdateOneAsync(filterDefinition, updateDefinition, optionsDefinition, token);
+        var result = await context.Collection.UpdateOneAsync(filterDefinition, updateDefinition, optionsDefinition, token);
 
         return cart;
     }
@@ -31,7 +31,7 @@ internal class BasketRepository(IMongoDbContext<ShoppingCart> context) : IBasket
     {
         var filterDefinition = Builders<ShoppingCart>.Filter.Eq(x => x.UserId, id);
 
-        var result = await context.collection.DeleteOneAsync(filterDefinition, null, token);
+        var result = await context.Collection.DeleteOneAsync(filterDefinition, null, token);
 
         return result.DeletedCount != 0;
     }
