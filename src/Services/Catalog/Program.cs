@@ -1,6 +1,8 @@
+
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
 string dbConnectionString = builder.Configuration.GetConnectionString("Database")!;
+
 
 
 builder.Host.UseSerilog((context, configuration) =>
@@ -43,7 +45,9 @@ builder.Services.AddCarter();
 builder.Services.AddMarten(opt =>
     {
         opt.Connection(dbConnectionString);
+        opt.AutoCreateSchemaObjects = AutoCreate.All;
     }).UseLightweightSessions();
+
 
 builder.Services.AddHealthChecks()
     .AddNpgSql(dbConnectionString);
@@ -57,6 +61,7 @@ if (builder.Environment.IsDevelopment())
 
 
 var app = builder.Build();
+
 
 if (app.Environment.IsDevelopment())
 {

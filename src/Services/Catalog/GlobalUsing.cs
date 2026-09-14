@@ -16,3 +16,4 @@ global using HealthChecks.UI.Client;
 global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 global using Microsoft.OpenApi.Models;
 global using Marten.Schema;
+global using JasperFx;
