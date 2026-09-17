@@ -2,6 +2,8 @@ version: '3.4'
 
 services:
 
+# --- DB ---
+
   pgadmin:
     container_name: pgadmin4
     environment:
@@ -14,11 +16,9 @@ services:
       - catalog.database
       - basket.database
 
-
   catalog.database:
     container_name: catalog.database
     environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=eshop_catalog
@@ -26,7 +26,7 @@ services:
     ports:
       - "5400:5432"
     volumes:
-      - catalog_db:/var/lib/postgresql/data
+      - catalog_db:/var/lib/postgresql
    
   basket.database:
     container_name: basket.database
@@ -46,6 +46,7 @@ services:
     ports:
       - "6379:6379"
 
+# --- API ---
 
   catalog.api:
     container_name: catalog.api

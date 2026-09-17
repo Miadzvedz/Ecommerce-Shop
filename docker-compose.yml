@@ -1,8 +1,10 @@
 
 services:
+
+# --- DB ---
+
   pgadmin:
     image: dpage/pgadmin4
-
 
   catalog.database:
     image: postgres
@@ -14,17 +16,19 @@ services:
     image: redis
 
 
+# --- API ---
+
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalog.api
     build:
       context: .
-      dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
+      dockerfile: src/Services/Catalog/Dockerfile
 
   basket.api:
     image: ${DOCKER_REGISTRY-}basket.api
     build:
       context: .
-      dockerfile: src/Services/Basket/Basket.API/Dockerfile
+      dockerfile: src/Services/Basket/Dockerfile
 
 
 volumes:

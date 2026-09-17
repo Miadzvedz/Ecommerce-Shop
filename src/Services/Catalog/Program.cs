@@ -1,8 +1,6 @@
-
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
 string dbConnectionString = builder.Configuration.GetConnectionString("Database")!;
-
 
 
 builder.Host.UseSerilog((context, configuration) =>
