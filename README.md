@@ -1,274 +1,323 @@
-# Ecommerce Shop (client-server application based on microservice architecture)
+# Ecommerce Shop
 
-### Description
-Developing a project using the .NET 8 and ASP.NET Core framework. The application has a microservice architecture.
-Why did I choose microservices for my project? Firstly, for educational purposes, and secondly, such architecture will allow me to easily expand the functionality of the application.
-For each microservice will have its own architecture and its own database type. The services will use databases such as relational databases (PostgreSQL, Sql Server) and NoSQL(Redis, DocumentDb).
-Implementing interaction between services via RabbitMQ message broker and using the Yarp API Gateway.
-
-### Content:
-- [BuildingBlocks Library](#buildingblocks-library)
-- [Catalog Microservice](#catalog-microservice)
-- [Catalog Service Tests](#catalog-service-tests)
-- [Basket Microservice](#basket-microservice)
-- [Basket Service Tests](#basket-service-tests)
+### Предисловие
+Этот проект создаётся исключительно в целях практического обучения.
+За основу обучающего материала был взят курс [.NET 8 Microservices: DDD, CQRS, Vertical/Clean Architecture](https://www.udemy.com/course/microservices-architecture-and-implementation-on-dotnet/?couponCode=KEEPLEARNING)
+В последующем многие вещи будут переписаны и улучшены с учётом собственых суждений. 
 
 
-### Ports
-| Microservices | Local Environment  | Docker Environment  | Docker Inside  |
-| :-------------|:------------------:| :------------------:|:--------------:|
-| Catalog       | 5000 - 5050        | 6000                | 8080 - 8081    |
-| Basket        | 5001 - 5051        | 6001                | 8080 - 8081    |
-| Diskount      | 5002 - 5052        | 6002                | 8080 - 8081    |
-| Ordering      | 5003 - 5053        | 6003                | 8080 - 8081    |
+### Описание
+Проект разрабатывается с использованием .NET 8 и фреймворка ASP.NET Core. Приложение имеет микросервисную архитектуру.
+Приложение будет иметь единую точку входа (gateway) для всех клиентов (сторонние api, web, мобильное приложение). В качестве шлюза будет использоваться [YARP](https://learn.microsoft.com/ru-ru/aspnet/core/fundamentals/servers/yarp/yarp-overview?view=aspnetcore-10.0).
+YARP (Yet Another Reverse Proxy) — это высокопроизводительный реверсивный-прокси сервер и API-шлюз с открытым исходным кодом, созданный компанией Microsoft на базе платформы .NET
+Так же каждый сервис будет покрыт автотестами. 
 
-### Application Diagram
+Почему я выбрал микросервисы для своего проекта?
+ - Попрактиковаться с контейнеризацией через docker compose, где каждый сервис будет изолирован в своем контейнере.
+ - Поработать с асинхронным обменом сообщений с помощью брокера RabbitMQ.
+ - Возможность разработки независимых и изолированых API, которые не будут оказывать влияния на соседние сервисы при их обновлениях.
+ - Попрактиковаться в работе с протоколом HTTP/2 с использованием фреймворка gRPC.
+ - Возможность задействовать для каждого сервиса подходящую базу данных.
+ - Возможность попробовать разные языки программирования и фреймворки в рамках одного проекта.
+ - Практика с маршрутизацией и шлюзом.
+
+### Содержание:
+- [BuildingBlocks](#buildingblocks)
+- [Catalog](#catalog-service)
+- [Автотесты для Catalog](#catalog-service-tests)
+- [Basket](#basket-service)
+- [Автотесты для Basket](#basket-service-tests)
+
+
+### Маршрутизация
+| Микросервисы  | Локальный хост     | Прокси              | Внутри контейнера  |
+| :-------------|:------------------:| :------------------:|:------------------:|
+| Catalog       | 5000 - 5050        | 6000                | 8080 - 8081        |
+| Basket        | 5001 - 5051        | 6001                | 8080 - 8081        |
+| Diskount      | 5002 - 5052        | 6002                | 8080 - 8081        |
+| Ordering      | 5003 - 5053        | 6003                | 8080 - 8081        |
+
+### Диограмма приложения
 
 ![EcommerceShop (Microservices)](https://github.com/user-attachments/assets/a4c4ceec-0c0a-4422-a62f-0054dacd98d3)
 
-# <a id="buildingblocks-library">BuildingBlocks Library</a> 
+# <a id="buildingblocks">BuildingBlocks</a> 
 
 [BuildingBlocks](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/src/BuildingBlocks/BuildingBlocks)
 
-This library contains code modules that will be reused by other services.
-This is where abstractions for CQRS, pipeline behaviors, exception handlers, etc. are collected.
-Don't forget about the DRY principle :)
+Этот модуль будет содержать код, который будет повторно использоваться другими сервисами.
+Здесь собраны абстракции для [CQRS](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/src/BuildingBlocks/BuildingBlocks/CQRS),
+логика логирования, логика валидации, исключения и обработчик исключений. CQRS (Command Query Responsibility Segregation) - это архитектурный паттерн,
+в котором код для изменения данных (commands) отделяется от кода для чтения данных (query). CQRS будет реализовываться с помощью библиотеки [MediatR](https://mediatr.io/).
+Команды помечаются через кастомные интерфейсы ICommand и ICommand<out TResponse>, если нужно вернуть часть данных.
+К примеру id обновлённого или созданого объекта в базе данных. Команды обрабатываются классом который реализует ICommandHandler<in TCommand> и ICommandHandler<in TCommand, TResponse>
+в зависимости, если нужно вернуть данные состояния объекта. Запросы же помечаются через кастомные интерфейсы IQuery<out TResponse> и обрабатываются классом,
+который реализует IQueryHandler<in TQuery, TResponse>. Так же в этом модуле будут храниться кастомные исключения и кастомный обработчик исключений реализующий интерфейс IExceptionHandler.
+
 
 ![image](https://github.com/user-attachments/assets/1a29a9ec-9a35-413b-b5db-ffa21e032570)
 
 
-# <a id="catalog-microservice">Catalog Microservice</a>
+# <a id="catalog-service">Catalog</a>
 
 [Catalog.API](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/src/Services/Catalog/Catalog.API)
 
-This service is responsible for management products which store in the database. 
-These are the ordinary CRUD operations. Microservice works on http/https protocols with using REST architecture.
+Этот сервис отвечает за управление товарами, которые хранятся в базе данных.
+Это обычные операции CRUD. Микросервис работает по протоколам http/https.
 
-### Ports
-| Services | Local Environment  | Docker Environment  | Docker Inside  |
-| :--------|:------------------:| :------------------:|:--------------:|
-| API      | 5000 - 5050        | 6000                | 8080 - 8081    |
-| Database |                    | 5400                | 5432           |
+### Маршрутизация
+| Объекты  | Локальный хост     | Прокси              | Внутри контейнера |
+| :--------|:------------------:| :------------------:|:-----------------:|
+| API      | 5000 - 5050        | 6000                | 8080 - 8081       |
+| Database |                    | 5400                | 5432              |
 
-### Requests 
+### Запросы 
 
 [postman export](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/postman)
 
-| Method  | Request URI                  | Description                    |
-| :-------|:-----------------------------| :------------------------------|
-| GET     | /health                      | Checking Database availability |
-| GET     | /products                    | Get all products               |
-| GET     | /products/{id}               | Get a product by Id            |
-| GET     | /products/category/{example} | Get products by category       |
-| POST    | /products                    | Create a product               |
-| PUT     | /products/{id}               | Update a product               |
-| DELETE  | /products/{id}               | Remove a product               | 
+| Метод   | Запрос                       | Описание                                |
+| :-------|:-----------------------------| :---------------------------------------|
+| GET     | /health                      | Проверка базы данных на доступность     |
+| GET     | /products                    | Получить все продукты                   |
+| GET     | /products/{id}               | Получить продукт по Id                  |
+| GET     | /products/category/{example} | Получить продукты по категории          |
+| POST    | /products                    | Создать продукт                         |
+| PUT     | /products/{id}               | Обновить продукт                        |
+| DELETE  | /products/{id}               | Удалить продукт                         | 
 
 
-### Examples Of Queries 
-https://localhost:5050/swagger/index.html
+### Примеры запросов 
+[Запросы через swagger](https://localhost:5050/swagger/index.html)
 
-<details><summary>Get all products</summary>
+
+<sub><b>P.S.</b> Для детального просмотра нажмите на стрелочку это выпадающий список.</sub>
+
+<details><summary>Получить все продукты</summary>
   
    ![image](https://github.com/user-attachments/assets/64e02db9-a91c-492d-844f-a667b01cf143)
    
 </details>
 
-<details><summary>Get product by id</summary>
+<details><summary>Получить продукт по id</summary>
   
    ![image](https://github.com/user-attachments/assets/bdec7995-c50e-477c-8d59-d0f83a7e8c9b)
    
 </details>
 
-<details><summary>Get product by category</summary>
+<details><summary>Получить продукт по категории</summary>
   
    ![image](https://github.com/user-attachments/assets/7b57faa9-9c70-4abf-90e3-1ff42a723426)
    
 </details>
 
-<details><summary>Create product</summary>
+<details><summary>Записать продукт</summary>
   
    ![image](https://github.com/user-attachments/assets/7aaacc2f-d754-47be-9a75-2debdb6f72fd)
    
 </details>
 
-<details><summary>Update product</summary>
+<details><summary>Обновить продукт</summary>
   
    ![image](https://github.com/user-attachments/assets/c4134a44-c6c3-4c51-ba9e-9ddf89e5b583)
    
 </details>
 
-<details><summary>Delete product</summary>
+<details><summary>Удалить продукт</summary>
   
    ![image](https://github.com/user-attachments/assets/ff9d0a80-1a8c-479a-8b40-31cacdd0bd56)
    
 </details>
 
-### Architecture
-API has got Vertical Slice Architecture. Organizes our code into feature folders, each feature encapsulated in a single .cs file.
+### Архитектура
+API использует архитектуру вертикальный срез (vertical slice). При этом подходе код будет организован в папки с функциями и каждая функция инкапсулировуется в отдельный файл .cs.
+
+Преимущества при таком подходе: 
+- Всё, что изменяется одновременно (валидация, SQL-запрос, кэширование Redis для одной фичи), лежит в одном месте.
+- Весь контекст изменений локализован в рамках одной фичи.
+- Срезы изолированы друг от друга.
+- Сохраняется принцип единственной ответственности
+
+Недостатки:
+- Приходится много раз дублировать код.
 
 ![image](https://github.com/user-attachments/assets/5a5ebbc2-1123-456e-81cf-baae8493e653) 
 ![image](https://github.com/user-attachments/assets/3ab5b377-8f60-4151-9c7b-8370f7a650ff)
 
-### Underlying Data Structures
-The [PostgreSQL](https://www.postgresql.org/) database was chosen to store product data and the [Marten](https://martendb.io "site Marten") ORM was chosen to interact with it.
-Marten transforms PostgreSQL into a .NET Transactional Document DB. This is made possible by the unique [JSONB](https://www.postgresql.org/docs/current/datatype-json.html) support first introduced in Postgresql 9.4.
-This solution combines the flexibility of a document database with the reliability of a PostgreSQL relational database.
+### База данных
+Для хранения данных о товарах была выбрана база данных [PostgreSQL](https://www.postgresql.org/), а для взаимодействия с ней — ORM [Marten](https://martendb.io "site Marten").
+Marten преобразует Postgres в документоориентированную базу данных с помощью специального расширения DocumentDB который даёт возможность хранить бинарный тип данных BSON. 
+Теперь Postgres становиться полностью совместим с не реляционной базой данных MongoDB.
+Это стало возможным благодаря уникальной поддержке [JSONB](https://www.postgresql.org/docs/current/datatype-json.html), впервые представленной в PostgreSQL 9.4. 
+JSONB (JSON Binary) — это специализированный тип данных в СУБД, предназначенный для хранения JSON-документов в бинарном формате.
+
+                                      
+| Критерий            | JSON                                  | JSONB                              |
+| :-------------------|:-------------------------------------:| :---------------------------------:|
+| Формат хранения     | Точная копия текста запроса           | Оптимизированный бинарный код      |
+| Скорость вставки    | Быстрее (простая запись строки)       | Медленнее (требуется парсинг)      | 
+| Скорость выборки    | Медленнее (парсинг при каждом чтении) | Значительно быстрее                |
+| Индексация          | Только функциональные индексы         | Полноценные GIN-индексы            | 
+| Дубликаты и порядок | Сохраняет порядок ключей и дубликаты. | Удаляет дубликаты, сортирует ключи | 
+
+
+### Главные минусы и «подводные камни»
+- Из-за хранения метаданных (структуры ключей) JSONB-файлы занимают больше места, чем чистый текст.
+- Любое изменение внутри JSONB (например, через jsonb_set) заставляет базу данных перезаписывать весь документ целиком.
+Если частые обновления и документы весят больше 2-8 КБ, это приведет к падению производительности.
 
 ### CQRS
-For more cleaner code I used a CQRS pattern.
-To implementation this pattern I used a MediatR [nuget](https://www.nuget.org/packages/mediatr/ "MediatR nuget package"). This provides low coupling with the endpoints and allows you to write cleaner, more understandable code.
-Low code coupling is also ensured by using the IPipelineBehavior generic interface for validations and logging. 
+Для реализации этого шаблона я использовал пакет MediatR [nuget](https://www.nuget.org/packages/mediatr/ "Пакет MediatR nuget"). 
+MediatR — это библиотека для платформы .NET (C#), которая реализует поведенческий шаблон проектирования «Посредник» (Mediator).
+Основная цель такого поподхода это снизить связанность кода и это упрощает разработку архитектуры CQRS. 
+MediatR идеально подходит для разделения операций чтения (Queries) и операций записи (Commands).
 
 ![image](https://github.com/user-attachments/assets/275aa4b1-71e1-4ea5-a8b8-383088ca2013)
 
-### Log:
-Each request is logged via LoggingBenavior. The start and end of the process are logged.
-If the process higher the threshold which equals 3 seconds, will be logged perfomance warning.
-Every error is logged, such as input data validation errors.
+### Конечные точки (endpoints) вместо классических контроллеров
+Использование конечных точек (Endpoints) вместо классических контроллеров — это архитектурный подход в .NET, известный как паттерн REPR (Request-Endpoint-Response).
+Вместо того чтобы группировать множество методов в одном большом классе (контроллере), создаётся один изолированный класс на каждую конкретную операцию.
+При использовании класических контроллеров в процессе разработки контроллеры часто раздуваются до классов с множеством методов в которых тяжело арентироваться.
+В конструктор контроллера приходится внедрять десятки сервисов, даже если конкретному методу нужен всего один из них. 
+
+Приимущество эндпоинтов:
+- Один файл отвечает ровно за одно действие.
+- Минимальные API компилируются и работают быстрее, чем тяжеловесный механизм маршрутизации классического MVC-контроллера
+- Каждую конечную точку можно легко протестировать изолированно
+
+Для своих Minimal APIs был выбран Carter. Carter — это легковесный фреймворк с открытым исходным кодом для .NET, который представляет собой тонкую обертку над встроенными Minimal APIs.
+
+
+### Логирование:
+Каждый запрос регистрируется с помощью LoggingBenavior. Регистрируются начало и конец процесса.
+Если время выполнения процесса превышает пороговое значение, равное 3 секундам, будет зарегистрировано предупреждение о низкой производительности.
+Регистрация ошибок таких как проверка входных данных.
+
 
 ![image](https://github.com/user-attachments/assets/13a7c1c8-c8a7-4cbf-b21e-ce002f96193c)
 ![image](https://github.com/user-attachments/assets/5b760116-bd83-4520-8bee-629f6291ced1)
 
 
-
-# <a id="catalog-service-tests">Catalog Service Tests</a>
+# <a id="catalog-service-tests">Тестирование сервиса Catalog</a>
 [CtalogServiceTests](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/tests/CtalogServiceTests)
 
 
-### Unit Tests
-For unit testing I have the following nugget packages:
+### Unit тесты
+Для модульного тестирования я использую следующие пакеты Nugget:
  - [xUnit](https://www.nuget.org/packages/xunit)
  - [Moq](https://www.nuget.org/packages/Moq)
  - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions.AspNetCore.Mvc)
 
-Handlers were tested by simulating various situations such as successful operation or throwing exception if the product was not found in the database.
-Working with the database is simulated by mocking Marten.IDocumentSession.
+Обработчики тестировались путем моделирования различных ситуаций, таких как успешная операция или генерация исключения, если продукт не был найден в базе данных.
+Работа с базой данных симулируется путём имитации Marten.IDocumentSession. IDocumentSession - это интерфейс,
+который реализует паттерн Unit of Work и является ключевым элементом в работе с документоориентированными базами данных такими как Postgres.
 
 ![image](https://github.com/user-attachments/assets/9c0906ec-efbe-46da-9cef-903a867d4dff)
 
-### Integration Tests
-For Integration testing I have the following nugget packages:
+### Интеграционные тесты
+Для интеграционного тестирования у меня установлены следующие пакеты NuGet пакеты:
  - [xUnit](https://www.nuget.org/packages/xunit)
  - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions.AspNetCore.Mvc)
  - [Testcontainers.PostgreSql](https://www.nuget.org/packages/Testcontainers.PostgreSql)
  - [Microsoft.AspNetCore.Mvc.Testing](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Testing)
 
-In time execution of integration tests, a database container is used for tests.
-The container life cycle is for the period of the test execution process.
-After the tests are executed, the container is deleted.
+При выполнении интеграционных тестов используется контейнер базы данных.
+Жизненный цикл контейнера охватывает период выполнения тестов.
+После выполнения тестов контейнер удаляется. По сути создаётся временная база данных для каждого теста,
+что бы тесты были приближены к более реальным условиям.
 
-Testing endpoints for expected status codes.
+Тестирование эндпоинтов на различные статусы запросов.
 
 ![image](https://github.com/user-attachments/assets/a63f9388-9682-4692-bf16-38fdfda3c5bf)
 
 
-# <a id="basket-microservice">Basket Microservice</a>
+
+# <a id="basket-service">Basket</a>
 [Basket.API](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/src/Services/Basket/Basket.API)
 
-This service is responsible for storing user baskets. Microservice works on http/https protocols with using REST architecture.
-The API interacts with the NoSQL MongoDb database and Redis for caching.
+Этот сервис отвечает за хранение покупок пользователей в личных корзинах. Микросервис работает по протоколам http/https.
 
-### Ports
-| Services | Local Environment  | Docker Environment  | Docker Inside  |
-| :--------|:------------------:| :------------------:|:--------------:|
-| API      | 5001 - 5051        | 6001                | 8080 - 8081    |
-| Database |                    | 5401                | 27017          |
-| Cacher   |                    | 6379                | 6379           |
 
-### Requests 
+### Маршрутизация
+| Объекты  | Локальный хост     | Прокси              | Внутри контейнера |
+| :--------|:------------------:| :------------------:|:-----------------:|
+| API      | 5001 - 5051        | 6001                | 8080 - 8081       |
+| Database |                    | 5401                | 27017             |
+| Cacher   |                    | 6379                | 6379              |
 
+### Запрос 
 [postman export](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/postman)
 
-| Method  | Request URI               | Description                    |
-| :-------|:--------------------------| :------------------------------|
-| GET     | /health                   | Checking Database availability |
-| GET     | /basket/{userId}          | Get a basket for user          |
-| POST    | /basket                   | Create or Update a basket      |
-| DELETE  | /basket/{userId}          | Remove a basket                | 
+| Метод   | Запрос                    | Описание                            |
+| :-------|:--------------------------| :-----------------------------------|
+| GET     | /health                   | Проверка базы данных на доступность |
+| GET     | /basket/{userId}          | Получить корзину для пользователя   |
+| POST    | /basket                   | Создать или обновить корзину        |
+| DELETE  | /basket/{userId}          | Удалить корзину                    | 
 
 
-### Examples Of Queries 
-https://localhost:5051/swagger/index.html
+### Пример запросов
+[Запросы через swagger](https://localhost:5051/swagger/index.html)
 
-<details><summary>Store basket</summary>
+
+<details><summary>Сохранение в корзине</summary>
   
    ![image](https://github.com/user-attachments/assets/8225448e-423f-407a-abb0-f61637943654)
    
 </details>
 
-<details><summary>Get basket</summary>
+<details><summary>Получить корзину</summary>
   
    ![image](https://github.com/user-attachments/assets/50f00dc2-46ca-4be1-9e72-dda8781370a5)
    
 </details>
 
-<details><summary>Delete basket</summary>
+<details><summary>Удалить корзину</summary>
   
    ![image](https://github.com/user-attachments/assets/33e7574a-0a43-4407-bda7-a6e2dba90575)
    
 </details>
 
 
-### Architecture
-API has got Vertical Slice Architecture. Organizes our code into feature folders, each feature encapsulated in a single .cs file.
-
-![image](https://github.com/user-attachments/assets/5a5ebbc2-1123-456e-81cf-baae8493e653) 
-![image](https://github.com/user-attachments/assets/3d453789-0c26-4fb8-a870-e840a9e109fd)
-
-
-### Underlying Data Structures
-The [MongoDb](https://www.mongodb.com/) database was chosen to store baskets. Interaction with the database occurs using [MongoDB.Driver](https://www.nuget.org/packages/mongodb.driver) ORM.
-[Redis](https://redis.io/) is responsible for data caching. Interaction with the cache and database occurs using the BasketRepository and CachedBasketRepository repositories, which implement the IBasketRepository interface.
-Registration of CachedBasketRepository is done using the Decorate method, this is an extension method for IServiceCollection. 
+### База данных
+ Для сервиса Basket была выбрана не реляционная база данных [MongoDb](https://www.mongodb.com/). Взаимодействие с базой данных осуществляется с помощью ORM [MongoDB.Driver](https://www.nuget.org/packages/mongodb.driver).
+[Redis](https://redis.io/) отвечает за кэширование данных. Взаимодействие с кэшем и базой данных осуществляется с помощью репозиториев BasketRepository и CachedBasketRepository, которые реализуют интерфейс IBasketRepository.
+При операции записи одновременно обновлятся и удаляются данные как в Redis так и в MongoDb. При чтении сначала проверяется наличие данных в Redis и если данных там нет, берёт их из MongoDB сохраняя в Redis что бы в следующий раз,
+если понядобятся эти данные, можно было сразу взять их из кэша. Для регистрации репозитоория отвечающего за кэш используется паттерн декоратор. Паттерн Декоратор — это структурный шаблон проектирования, который позволяет динамически
+добавлять объектам новую функциональность, оборачивая их в классы-обертки, без изменения исходного кода самих объектов. Регистрация репозитория для кэшера происходит через декоратор по средством метода расширения Decorate для интерфейса IServiceCollection.
+Скорей всего в будущем для целей синхронизации двух баз данных будет применён паттерн CDC (Change Data Capture), синхронизация по событиям через брокер сообщений RabbitMQ. Такой подход сделает операцию чтения и записи по настоящему
+асинхронной. Это должно добавить прирост к скорости операций, но увеличит нагрузку на сервер.
 
 ![image](https://github.com/user-attachments/assets/d1c10429-b351-48ce-a557-a1bc4dd2cb33)
-
-### CQRS
-Just like with the catalog api, I used CQRS to keep the code more clean and used for this a MediatR [nuget](https://www.nuget.org/packages/mediatr/ "MediatR nuget package"). 
-This provides low coupling with the endpoints and allows you to write cleaner, more understandable code.
-Low code coupling is also ensured by using the IPipelineBehavior generic interface for validations and logging. 
-
-![image](https://github.com/user-attachments/assets/e6b8a6dc-6285-4c46-93f9-b92714d438cf)
-
-
-
 
 
 # <a id="catalog-service-tests">Basket Service Tests</a>
 [BasketServiceTests](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/tests/BasketServiceTests)
 
-### Unit Tests
+### Unit тесты
 For unit testing I have the following nugget packages:
  - [xUnit](https://www.nuget.org/packages/xunit)
  - [Moq](https://www.nuget.org/packages/Moq)
  - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions.AspNetCore.Mvc)
 
-Handlers were tested by simulating various situations such as successful operation or throwing exception if the basket was not found.
-Working with the database is simulated by mocking IBasketRepository
+Обработчики тестировались путем моделирования различных ситуаций, таких как успешная операция или генерация исключения, если корзина не была найдена.
+Работа с базой данных имитируется путем создания копии объекта IBasketRepository.
 
 ![image](https://github.com/user-attachments/assets/7eab2800-053b-4e2a-bf75-90334b09abd0)
 
-### Integration Tests
-For Integration testing I have the following nugget packages:
+### Интеграционные тесты
+Для интеграционного тестирования я использую следующие пакеты NuGet:
  - [xUnit](https://www.nuget.org/packages/xunit)
  - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions.AspNetCore.Mvc)
  - [Microsoft.AspNetCore.Mvc.Testing](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Testing)
  - [Mongo2Go](https://www.nuget.org/packages/Mongo2Go/)
 
-With each call of the static method MongoDbRunner.Start() a new MongoDB instance will be set up. 
-A free port will be used (starting with port 27018) and a corresponding data directory will be created. 
-The method returns an instance of MongoDbRunner, which implements IDisposable. 
-As soon as the MongoDbRunner is disposed (or if the Finalizer is called by the GC), the wrapped MongoDB process will be killed and all data in the data directory will be deleted.
+При каждом вызове статического метода MongoDbRunner.Start() создаётся новый экземпляр MongoDB.
+Используется свободный порт (начиная с порта 27018), и создаётся соответствующий каталог данных.
+Метод возвращает экземпляр MongoDbRunner, реализующий интерфейс IDisposable.
+Как только MongoDbRunner будет освобожден (или если сборщик мусора GC вызовет метод Finalizer), процесс MongoDB будет завершен, и все данные в каталоге данных будут удалены.
+Простыми словами создаётся временная база данных для тестирования и после тестирования она удаляется.
 [Mongo2Go README.md](https://github.com/Mongo2Go/Mongo2Go/blob/main/README.md)
 
-Testing endpoints for expected status codes.
+Проверка конечных точек на соответствие ожидаемым статус-кодам.
 
 ![image](https://github.com/user-attachments/assets/3cb64d9e-f112-4ed9-9bce-dc6953e737a7)
-
-
-
-
-
-
-
