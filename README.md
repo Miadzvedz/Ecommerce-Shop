@@ -20,6 +20,7 @@ YARP (Yet Another Reverse Proxy) — это высокопроизводител
  - Возможность задействовать для каждого сервиса подходящую базу данных.
  - Возможность попробовать разные языки программирования и фреймворки в рамках одного проекта.
  - Практика с маршрутизацией и шлюзом.
+ - Попрактиковаться в написаниии интеграционных и юнит тестов
 
 ### Содержание:
 - [BuildingBlocks](#buildingblocks)
@@ -43,7 +44,7 @@ YARP (Yet Another Reverse Proxy) — это высокопроизводител
 
 # <a id="buildingblocks">BuildingBlocks</a> 
 
-[BuildingBlocks](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/src/BuildingBlocks/BuildingBlocks)
+[BuildingBlocks](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/src/BuildingBlocks/BuildingBlocks)
 
 Этот модуль будет содержать код, который будет повторно использоваться другими сервисами.
 Здесь собраны абстракции для [CQRS](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/src/BuildingBlocks/BuildingBlocks/CQRS),
@@ -60,7 +61,7 @@ YARP (Yet Another Reverse Proxy) — это высокопроизводител
 
 # <a id="catalog-service">Catalog</a>
 
-[Catalog.API](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/src/Services/Catalog/Catalog.API)
+[Catalog.API](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/src/Services/Catalog/Catalog.API)
 
 Этот сервис отвечает за управление товарами, которые хранятся в базе данных.
 Это обычные операции CRUD. Микросервис работает по протоколам http/https.
@@ -73,7 +74,7 @@ YARP (Yet Another Reverse Proxy) — это высокопроизводител
 
 ### Запросы 
 
-[postman export](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/postman)
+[postman export](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/postman)
 
 | Метод   | Запрос                       | Описание                                |
 | :-------|:-----------------------------| :---------------------------------------|
@@ -198,7 +199,7 @@ MediatR идеально подходит для разделения опера
 
 
 # <a id="catalog-service-tests">Тестирование сервиса Catalog</a>
-[CtalogServiceTests](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/tests/CtalogServiceTests)
+[CtalogServiceTests](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/tests/CtalogServiceTests)
 
 
 ### Unit тесты
@@ -232,7 +233,7 @@ MediatR идеально подходит для разделения опера
 
 
 # <a id="basket-service">Basket</a>
-[Basket.API](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/src/Services/Basket/Basket.API)
+[Basket.API](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/src/Services/Basket/Basket.API)
 
 Этот сервис отвечает за хранение покупок пользователей в личных корзинах. Микросервис работает по протоколам http/https.
 
@@ -245,7 +246,7 @@ MediatR идеально подходит для разделения опера
 | Cacher   |                    | 6379                | 6379              |
 
 ### Запрос 
-[postman export](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/postman)
+[postman export](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/postman)
 
 | Метод   | Запрос                    | Описание                            |
 | :-------|:--------------------------| :-----------------------------------|
@@ -291,7 +292,7 @@ MediatR идеально подходит для разделения опера
 
 
 # <a id="catalog-service-tests">Basket Service Tests</a>
-[BasketServiceTests](https://github.com/Grizzly-Alex/Ecommerce-Shop/tree/main/tests/BasketServiceTests)
+[BasketServiceTests](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/tests/BasketServiceTests)
 
 ### Unit тесты
 For unit testing I have the following nugget packages:
