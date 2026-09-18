@@ -15,7 +15,7 @@ permissions:
 jobs:
   # --- ÑÒÀÄÈß 1: ÑÁÎĞÊÀ È ÒÅÑÒÈĞÎÂÀÍÈÅ ---
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout repository
