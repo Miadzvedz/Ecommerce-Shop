@@ -36,15 +36,15 @@ jobs:
           ${{ runner.os }}-nuget-
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore Ecommerce-Shop.sln
 
     - name: Build Solution
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build Ecommerce-Shop.sln --no-restore --configuration Release
 
     # Запуск всех тестов (Unit и Integration)
     # В этот момент IAsyncLifetime будет успешно обращаться к Docker хоста
     - name: Run Tests
-      run: dotnet test --no-build --configuration Release --verbosity normal
+      run: dotnet test Ecommerce-Shop.sln --no-build --configuration Release --verbosity normal
 
   # --- СТАДИЯ 2: СБОРКА И ПУШ DOCKER-ОБРАЗОВ ---
   # Запускается ТОЛЬКО если тесты прошли успешно И это пуш в ветку main
