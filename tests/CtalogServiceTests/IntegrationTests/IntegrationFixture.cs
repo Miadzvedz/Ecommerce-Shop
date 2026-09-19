@@ -29,7 +29,7 @@ public class IntegrationFixture : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-        await _postgreSqlContainer.StopAsync();
+        await _postgreSqlContainer.StopAsync();      
     }
 }
 

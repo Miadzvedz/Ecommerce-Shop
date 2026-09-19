@@ -35,6 +35,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.API", "src\Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "src\BuildingBlocks\BuildingBlocks.csproj", "{2C59E140-58BE-2575-EFA6-5EEF08D86238}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configuration", "configuration", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci-cd.yml = .github\workflows\ci-cd.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +75,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{4958719F-65AF-4C44-BBE7-74274EDA8061} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{E0D9B6D2-DDDC-477F-BF0D-8DFA9145AE36} = {CDD49D86-6C6E-469E-9CEB-1A67B5062B8E}
 		{E8939563-FC9A-400D-A8CD-21EE2C7AD469} = {25850452-FB78-44DC-8B35-BBB98699EA6D}
 		{D4631D18-5795-4F5D-A91E-FC7715CA46B7} = {CDD49D86-6C6E-469E-9CEB-1A67B5062B8E}
