@@ -1,19 +1,19 @@
 name: CI/CD Pipeline
 
-# Фильтрация по веткам для команд
+# Branch filtering for commands
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-# Разрешает пайплайну читать содержимое репозитория и право на публикацию и обновление (GitHub Container Registry (ghcr.io))
+# Allow the pipeline to read the repository contents, as well as the right to publish and update. (GitHub Container Registry (ghcr.io))
 permissions:
   contents: read
   packages: write
 
 jobs:
-  # --- СТАДИЯ 1: СБОРКА И ТЕСТИРОВАНИЕ ---
+  # === STAGE 1: CI (NuGet caching & Test) ===
   build-and-test:
     runs-on: ubuntu-22.04
 
@@ -26,7 +26,7 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    # Кэширование Nuget-пакетов для ускорения повторных запусков пайплайна
+    # Caching NuGet packages for accelerate subsequent pipeline runs
     - name: Cache NuGet packages
       uses: actions/cache@v4
       with:
@@ -41,16 +41,14 @@ jobs:
     - name: Build Solution
       run: dotnet build Ecommerce-Shop.sln --no-restore --configuration Release
 
-    # Запуск всех тестов (Unit и Integration)
-    # В этот момент IAsyncLifetime будет успешно обращаться к Docker хоста
+    # Run all tests (Unit and Integration)
     - name: Run Tests
       run: dotnet test Ecommerce-Shop.sln --no-build --configuration Release --verbosity normal
 
-  # --- СТАДИЯ 2: СБОРКА И ПУШ DOCKER-ОБРАЗОВ ---
-  # Запускается ТОЛЬКО если тесты прошли успешно И это пуш в ветку main
+  # === STAGE 2: CI (Docker Build & Push) ===
   deploy-images:
     needs: build-and-test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
@@ -60,7 +58,7 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    # Авторизуемся в GitHub Container Registry (ghcr.io), используя встроенный токен
+    # Authenticate with GitHub Container Registry (ghcr.io) using the built-in token
     - name: Log in to GitHub Container Registry
       uses: docker/login-action@v3
       with:
@@ -68,12 +66,12 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    # Переводим имя репозитория в нижний регистр (требование Docker для тегов)
+    # Convert the repository name to lowercase (Docker requirement for tags)
     - name: Downcase repository name
       run: |
         echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
 
-    # Сборка и отправка микросервиса Каталога
+    # Building and deploying the Catalog microservice
     - name: Build and Push Catalog Service
       uses: docker/build-push-action@v5
       with:
@@ -82,7 +80,7 @@ jobs:
         push: true
         tags: ghcr.io/${{ env.REPO_LOWER }}/catalog-service:latest
 
-    # Сборка и отправка микросервиса Корзины
+    # Building and deploying the Basket microservice
     - name: Build and Push Basket Service
       uses: docker/build-push-action@v5
       with:
