@@ -21,6 +21,21 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # Check exactly which folders contain code changes.
+    - name: Check for changes in microservices
+      id: filter
+      uses: dorny/paths-filter@v3
+      with:
+        filters: |
+          catalog:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Catalog/**'
+            - 'tests/CatalogServiceTests/**'
+          basket:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Basket/**'
+            - 'tests/BasketServiceTests/**'
+
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
@@ -38,12 +53,32 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore Ecommerce-Shop.sln
 
-    - name: Build Solution
-      run: dotnet build Ecommerce-Shop.sln --no-restore --configuration Release
+    # CATALOG 
+    - name: Build Catalog Service
+      if: steps.filter.outputs.catalog == 'true'
+      run: dotnet build src/Services/Catalog/Catalog.API.csproj --no-restore --configuration Release
 
-    # Run all tests (Unit and Integration)
-    - name: Run Tests
-      run: dotnet test Ecommerce-Shop.sln --no-build --configuration Release --verbosity normal
+    - name: Run Catalog Unit Tests 
+      if: steps.filter.outputs.catalog == 'true'
+      run: dotnet test tests/CatalogServiceTests/UnitTests/ --no-build --configuration Release
+
+    - name: Run Catalog Integration Tests
+      if: steps.filter.outputs.catalog == 'true'
+      run: dotnet test tests/CatalogServiceTests/IntegrationTests/ --no-build --configuration Release
+
+    # BASKET
+    - name: Build Basket Service
+      if: steps.filter.outputs.basket == 'true'
+      run: dotnet build src/Services/Basket/Basket.API.csproj --no-restore --configuration Release
+
+    - name: Run Basket Unit Tests 
+      if: steps.filter.outputs.basket == 'true'
+      run: dotnet test tests/BasketServiceTests/UnitTests/ --no-build --configuration Release
+
+    - name: Run Basket Integration Tests
+      if: steps.filter.outputs.basket == 'true'
+      run: dotnet test tests/BasketServiceTests/IntegrationTests/ --no-build --configuration Release
+
 
   # === STAGE 2: CI (Docker Build & Push) ===
   deploy-images:
@@ -54,6 +89,18 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Check for changes in microservices
+      id: filter
+      uses: dorny/paths-filter@v3
+      with:
+        filters: |
+          catalog:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Catalog/**'
+          basket:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Basket/**'
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -73,6 +120,7 @@ jobs:
 
     # Building and deploying the Catalog microservice
     - name: Build and Push Catalog Service
+      if: steps.filter.outputs.catalog == 'true'
       uses: docker/build-push-action@v5
       with:
         context: .
@@ -82,6 +130,7 @@ jobs:
 
     # Building and deploying the Basket microservice
     - name: Build and Push Basket Service
+      if: steps.filter.outputs.basket == 'true'
       uses: docker/build-push-action@v5
       with:
         context: .
