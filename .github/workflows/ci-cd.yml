@@ -58,33 +58,25 @@ jobs:
       if: steps.filter.outputs.catalog == 'true'
       run: dotnet build src/Services/Catalog/Catalog.API.csproj --no-restore --configuration Release
 
-    - name: Run Catalog Unit Tests 
+    - name: Run Catalog Tests 
       if: steps.filter.outputs.catalog == 'true'
-      run: dotnet test tests/CatalogServiceTests/UnitTests/ --no-build --configuration Release
-
-    - name: Run Catalog Integration Tests
-      if: steps.filter.outputs.catalog == 'true'
-      run: dotnet test tests/CatalogServiceTests/IntegrationTests/ --no-build --configuration Release
+      run: dotnet test tests/CatalogServiceTests/CatalogServiceTests.csproj --no-restore --configuration Release
 
     # BASKET
     - name: Build Basket Service
       if: steps.filter.outputs.basket == 'true'
       run: dotnet build src/Services/Basket/Basket.API.csproj --no-restore --configuration Release
 
-    - name: Run Basket Unit Tests 
+    - name: Run Basket Tests 
       if: steps.filter.outputs.basket == 'true'
-      run: dotnet test tests/BasketServiceTests/UnitTests/ --no-build --configuration Release
-
-    - name: Run Basket Integration Tests
-      if: steps.filter.outputs.basket == 'true'
-      run: dotnet test tests/BasketServiceTests/IntegrationTests/ --no-build --configuration Release
+      run: dotnet test tests/BasketServiceTests/BasketServiceTests.csproj --no-restore --configuration Release
 
 
   # === STAGE 2: CI (Docker Build & Push) ===
   deploy-images:
     needs: build-and-test
     runs-on: ubuntu-22.04
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
     - name: Checkout repository
