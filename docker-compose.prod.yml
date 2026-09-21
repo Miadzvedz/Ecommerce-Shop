@@ -36,7 +36,7 @@ services:
     ports:
       - "6379:6379"
 
-# --- API ---
+  # --- API ---
 
   catalog.api:
     container_name: catalog-service
