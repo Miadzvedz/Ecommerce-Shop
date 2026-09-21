@@ -23,7 +23,7 @@ public class CreateProductEndpointTests(IntegrationFixture integrationFixture) :
     public async Task CreateProduct_ReturnStatusCode422_WhenNotValidRequestData()
     {
         // Arrange
-        var incorrectRequest = new { Country = "Germany", Sity = "Munich" };
+        var incorrectRequest = new { Country = "Germany", City = "Munich" };
         var content = new StringContent(JsonConvert.SerializeObject(incorrectRequest), Encoding.UTF8, "application/json");
 
         //Act

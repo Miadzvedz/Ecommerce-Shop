@@ -1,0 +1,164 @@
+name: CI/CD Pipeline
+
+# Branch filtering for commands
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Allow the pipeline to read the repository contents, as well as the right to publish and update. (GitHub Container Registry (ghcr.io))
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  # === STAGE 1: CI (NuGet caching & Test) ===
+  build-and-test:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Check exactly which folders contain code changes.
+    - name: Check for changes in microservices
+      id: filter
+      uses: dorny/paths-filter@v3
+      with:
+        filters: |
+          catalog:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Catalog/**'
+            - 'tests/CatalogServiceTests/**'
+          basket:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Basket/**'
+            - 'tests/BasketServiceTests/**'
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    # Caching NuGet packages for accelerate subsequent pipeline runs
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.sln') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Restore dependencies
+      run: dotnet restore Ecommerce-Shop.sln
+
+    # CATALOG 
+    - name: Build Catalog Service
+      if: steps.filter.outputs.catalog == 'true'
+      run: dotnet build src/Services/Catalog/Catalog.API.csproj --no-restore --configuration Release
+
+    - name: Run Catalog Tests 
+      if: steps.filter.outputs.catalog == 'true'
+      run: dotnet test tests/CatalogServiceTests/CatalogServiceTests.csproj --no-restore --configuration Release
+
+    # BASKET
+    - name: Build Basket Service
+      if: steps.filter.outputs.basket == 'true'
+      run: dotnet build src/Services/Basket/Basket.API.csproj --no-restore --configuration Release
+
+    - name: Run Basket Tests 
+      if: steps.filter.outputs.basket == 'true'
+      run: dotnet test tests/BasketServiceTests/BasketServiceTests.csproj --no-restore --configuration Release
+
+
+  # === STAGE 2: CI (Docker Build & Push) ===
+  deploy-images:
+    needs: build-and-test
+    runs-on: ubuntu-22.04
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Check for changes in microservices
+      id: filter
+      uses: dorny/paths-filter@v3
+      with:
+        filters: |
+          catalog:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Catalog/**'
+          basket:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Basket/**'
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # Authenticate with GitHub Container Registry (ghcr.io) using the built-in token
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    # Convert the repository name to lowercase (Docker requirement for tags)
+    - name: Downcase repository name
+      run: |
+        echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
+
+    # Building and deploying the Catalog microservice
+    - name: Build and Push Catalog Service
+      if: steps.filter.outputs.catalog == 'true'
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./src/Services/Catalog/Dockerfile 
+        push: true
+        tags: |
+            ghcr.io/${{ env.REPO_LOWER }}/catalog-service:latest
+            ghcr.io/${{ env.REPO_LOWER }}/catalog-service:${{ github.sha }}
+
+    # Building and deploying the Basket microservice
+    - name: Build and Push Basket Service
+      if: steps.filter.outputs.basket == 'true'
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./src/Services/Basket/Dockerfile
+        push: true
+        tags: |
+            ghcr.io/${{ env.REPO_LOWER }}/basket-service:latest
+            ghcr.io/${{ env.REPO_LOWER }}/basket-service:${{ github.sha }}
+
+
+    # === STAGE 3: CD (Deploy To Local Windows) ===
+  deploy-to-local-windows:
+      needs: deploy-images
+      runs-on: self-hosted
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+      steps:
+        - name: Log in to GitHub Container Registry
+          uses: docker/login-action@v3
+          with:
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Pull and Restart Containers
+          run: |
+            d:
+            cd "D:\WebDev\Ecommerce-Shop"
+          
+            Write-Output "=== Download the latest images ==="
+            docker compose pull
+          
+            Write-Output "=== Restarting containers ==="
+            docker compose up -d --remove-orphans
+          
+            Write-Output "=== The latest version is used for Ecommerce-Shop. ==="
+

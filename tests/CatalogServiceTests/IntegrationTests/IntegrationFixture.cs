@@ -3,20 +3,18 @@
 public class IntegrationFixture : IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgreSqlContainer;
-    public HttpClient Client { get; set; }
-    public MockApp App { get; set; }
+    public required HttpClient Client { get; set; }
+    public required MockApp App { get; set; }
     public IServiceProvider Services => App.Services;
+
 
     public IntegrationFixture()
     {
-        _postgreSqlContainer = new PostgreSqlBuilder()
+        _postgreSqlContainer = new PostgreSqlBuilder("postgres:15.1")
             .WithDatabase("catalog_marten_test")
-            .WithPortBinding(9999, 5432)
             .WithUsername("postgres")
             .WithPassword("postgres")
-            .WithImage("postgres:15.1")
-            .Build(); 
-        _postgreSqlContainer.StartAsync();   
+            .Build();   
     }
 
     public async Task InitializeAsync()
@@ -29,7 +27,12 @@ public class IntegrationFixture : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-        await _postgreSqlContainer.StopAsync();
+        App?.Dispose();
+
+        if (_postgreSqlContainer != null)
+        {
+            await _postgreSqlContainer.StopAsync();
+        }
     }
 }
 
@@ -67,7 +70,7 @@ public class IntegrationTest(IntegrationFixture integrationFixture) : IAsyncLife
 {
     public IntegrationFixture IntegrationFixture { get; } = integrationFixture;
     public HttpClient Client => IntegrationFixture.Client;
-    public IServiceScope Scope {  get; set; }   
+    public required IServiceScope Scope {  get; set; }   
     public IServiceProvider Services => Scope.ServiceProvider;
 
     public Task InitializeAsync()
