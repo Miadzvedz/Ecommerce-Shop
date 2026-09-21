@@ -118,7 +118,9 @@ jobs:
         context: .
         file: ./src/Services/Catalog/Dockerfile 
         push: true
-        tags: ghcr.io/${{ env.REPO_LOWER }}/catalog-service:latest
+        tags: |
+            ghcr.io/${{ env.REPO_LOWER }}/catalog-service:latest
+            ghcr.io/${{ env.REPO_LOWER }}/catalog-service:${{ github.sha }}
 
     # Building and deploying the Basket microservice
     - name: Build and Push Basket Service
@@ -128,5 +130,7 @@ jobs:
         context: .
         file: ./src/Services/Basket/Dockerfile
         push: true
-        tags: ghcr.io/${{ env.REPO_LOWER }}/basket-service:latest
+        tags: |
+            ghcr.io/${{ env.REPO_LOWER }}/basket-service:latest
+            ghcr.io/${{ env.REPO_LOWER }}/basket-service:${{ github.sha }}
 
