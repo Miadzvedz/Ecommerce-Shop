@@ -19,13 +19,13 @@ services:
 # --- API ---
 
   catalog.api:
-    image: ${DOCKER_REGISTRY-}catalog.api
+    image: ${DOCKER_REGISTRY-}catalog-service
     build:
       context: .
       dockerfile: src/Services/Catalog/Dockerfile
 
   basket.api:
-    image: ${DOCKER_REGISTRY-}basket.api
+    image: ${DOCKER_REGISTRY-}basket-service
     build:
       context: .
       dockerfile: src/Services/Basket/Dockerfile

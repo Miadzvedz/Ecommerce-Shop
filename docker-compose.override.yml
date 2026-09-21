@@ -17,7 +17,7 @@ services:
       - basket.database
 
   catalog.database:
-    container_name: catalog.database
+    container_name: catalog-database
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -29,7 +29,7 @@ services:
       - catalog_db:/var/lib/postgresql
    
   basket.database:
-    container_name: basket.database
+    container_name: basket-database
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongo
       - MONGO_INITDB_ROOT_PASSWORD=mongo
@@ -41,7 +41,7 @@ services:
       - basket_db:/data/db
 
   basket.cache:
-    container_name: basket.cache
+    container_name: basket-cache
     restart: always
     ports:
       - "6379:6379"
@@ -49,7 +49,7 @@ services:
 # --- API ---
 
   catalog.api:
-    container_name: catalog.api
+    container_name: catalog-service
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -63,7 +63,7 @@ services:
       - catalog.database
 
   basket.api:
-    container_name: basket.api
+    container_name: basket-service
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
