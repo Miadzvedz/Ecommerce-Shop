@@ -399,3 +399,7 @@ FodyWeavers.xsd
 
 # Docker
 .containers/
+
+# Configurations with secret passwords
+.env
+.env.prod

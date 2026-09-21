@@ -150,15 +150,16 @@ jobs:
             password: ${{ secrets.GITHUB_TOKEN }}
 
         - name: Pull and Restart Containers
+          shell: powershell {0}
           run: |
             d:
             cd "D:\WebDev\Ecommerce-Shop"
           
             Write-Output "=== Download the latest images ==="
-            docker compose pull
+            docker compose -f docker-compose.prod.yml pull
           
             Write-Output "=== Restarting containers ==="
-            docker compose up -d --remove-orphans
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
           
             Write-Output "=== The latest version is used for Ecommerce-Shop. ==="
 
