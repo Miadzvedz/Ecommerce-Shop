@@ -60,7 +60,7 @@ GitHub по средством веб-сокетов (отправка лого�
 | Diskount      | 5002 - 5052        | 6002                | 8080 - 8081        |
 | Ordering      | 5003 - 5053        | 6003                | 8080 - 8081        |
 
-### Диограмма приложения
+### Диаграмма
 
 ![EcommerceShop (Microservices)](https://github.com/user-attachments/assets/a4c4ceec-0c0a-4422-a62f-0054dacd98d3)
 
