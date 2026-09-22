@@ -1,5 +1,3 @@
-version: '3.4'
-
 services:
 
 # --- DB ---
@@ -8,7 +6,7 @@ services:
     container_name: pgadmin4
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=root
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN4_PASSWORD}
     restart: always
     ports:
       - "5450:80"
@@ -20,7 +18,7 @@ services:
     container_name: catalog-database
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=eshop_catalog
     restart: always
     ports:
@@ -32,7 +30,7 @@ services:
     container_name: basket-database
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongo
-      - MONGO_INITDB_ROOT_PASSWORD=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
       - MONGO_INITDB_DATABASE=eshop_basket
     restart: always
     ports:
@@ -42,6 +40,7 @@ services:
 
   basket.cache:
     container_name: basket-cache
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     restart: always
     ports:
       - "6379:6379"
@@ -53,7 +52,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
-      - ConnectionStrings__Database=Server=catalog.database;Port=5432;Database=eshop_catalog;User Id=postgres;Password=postgres;Include Error Detail=true
+      - ConnectionStrings__Database=Server=catalog.database;Port=5432;Database=eshop_catalog;User Id=postgres;Password=${POSTGRES_PASSWORD};Include Error Detail=true
     ports:
       - "6000:8080"
     volumes:
@@ -67,8 +66,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
-      - MongoDbSettings__ConnectionString=mongodb://mongo:mongo@basket.database:27017
-      - RedisSettings__ConnectionString=basket.cache:6379
+      - MongoDbSettings__ConnectionString=mongodb://mongo:${MONGO_PASSWORD}@basket.database:27017
+      - RedisSettings__ConnectionString=basket.cache:6379,password=${REDIS_PASSWORD}
     ports:
       - "6001:8080"
     volumes:
