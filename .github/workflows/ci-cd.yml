@@ -157,10 +157,9 @@ jobs:
           
             Write-Output "=== Download the latest images ==="
             docker compose -f docker-compose.prod.yml pull
-            docker compose -f configuration/docker-compose/docker-compose.prod.yml pull
           
             Write-Output "=== Restarting containers ==="
-            docker compose -f configuration/docker-compose/docker-compose.prod.yml --env-file .env.prod up -d --remove-orphans
+            docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --remove-orphans
           
             Write-Output "=== CD completed successfully! Microservices updated! ==="
 

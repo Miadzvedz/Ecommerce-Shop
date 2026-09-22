@@ -1,6 +1,10 @@
 services:
 
+<<<<<<< HEAD
   # --- DB ---    
+=======
+  # --- DB ---
+>>>>>>> c7c1c75 (configuration env files)
 
   catalog.database:
     container_name: catalog-database
@@ -36,11 +40,13 @@ services:
     ports:
       - "6379:6379"
 
+# --- API ---
+
   # --- API ---
 
   catalog.api:
     container_name: catalog-service
-    image: ghcr.io/miadzvedz/ecommerce-shop/catalog-service:latest
+    image: ghcr.io/miadzvedz/ecommerce-store/catalog-service:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Database=Server=catalog.database;Port=5432;Database=eshop_catalog;User Id=postgres;Password=${POSTGRES_PASSWORD}
@@ -51,7 +57,7 @@ services:
 
   basket.api:
     container_name: basket-service
-    image: ghcr.io/miadzvedz/ecommerce-shop/basket-service:latest
+    image: ghcr.io/miadzvedz/ecommerce-store/basket-service:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - MongoDbSettings__ConnectionString=mongodb://mongo:${MONGO_PASSWORD}@basket.database:27017
