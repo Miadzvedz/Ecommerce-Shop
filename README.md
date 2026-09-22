@@ -24,7 +24,8 @@ YARP (Yet Another Reverse Proxy) — это высокопроизводител
 
 ### Содержание:
 - [CI/CD](#ci-cd)
-- [BuildingBlocks](#buildingblocks)
+- [Главная схема](#main_diagram)
+- [BuildingBlocks](#building_blocks)
 - [Catalog](#catalog-service)
 - [Автотесты для Catalog](#catalog-service-tests)
 - [Basket](#basket-service)
@@ -49,7 +50,7 @@ YARP (Yet Another Reverse Proxy) — это высокопроизводител
 Для того что бы готовые образы применялись для локального докера, требовалось установить GitHub Actions Runner, который работает как сервис на локальном компьютере в фоновом режиме и постоянно прослушивает команды со стороны 
 GitHub по средством веб-сокетов (отправка логов на сервер) и по технологии Long Polling (ожидание задач). 
 
-
+# <a id="main_diagram">Главная схема</a> 
 
 ### Маршрутизация
 | Микросервисы  | Локальный хост     | Прокси              | Внутри контейнера  |
@@ -63,7 +64,7 @@ GitHub по средством веб-сокетов (отправка лого�
 
 ![EcommerceShop (Microservices)](https://github.com/user-attachments/assets/a4c4ceec-0c0a-4422-a62f-0054dacd98d3)
 
-# <a id="buildingblocks">BuildingBlocks</a> 
+# <a id="building_blocks">BuildingBlocks</a> 
 
 [BuildingBlocks](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/src/BuildingBlocks/BuildingBlocks)
 
