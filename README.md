@@ -228,7 +228,7 @@ MediatR идеально подходит для разделения опера
 [CtalogServiceTests](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/tests/CtalogServiceTests)
 
 
-### Unit тесты
+### Модульные тесты
 Для модульного тестирования я использую следующие пакеты Nugget:
  - [xUnit](https://www.nuget.org/packages/xunit)
  - [Moq](https://www.nuget.org/packages/Moq)
@@ -322,7 +322,7 @@ MediatR идеально подходит для разделения опера
 # <a id="catalog-service-tests">Basket Service Tests</a>
 [BasketServiceTests](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/tests/BasketServiceTests)
 
-### Unit тесты
+### Модульные тесты
 For unit testing I have the following nugget packages:
  - [xUnit](https://www.nuget.org/packages/xunit)
  - [Moq](https://www.nuget.org/packages/Moq)
