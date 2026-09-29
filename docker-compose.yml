@@ -7,10 +7,10 @@ services:
     image: dpage/pgadmin4
 
   catalog.database:
-    image: postgres
+    image: postgres:16
 
   basket.database:
-    image: mongo
+    image: mongo:8.3
 
   basket.cache:
     image: redis

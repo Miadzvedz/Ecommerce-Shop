@@ -4,7 +4,7 @@ services:
 
   catalog.database:
     container_name: catalog-database
-    image: postgres:15-alpine
+    image: postgres:16
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -14,10 +14,16 @@ services:
       - "5400:5432"
     volumes:
       - catalog_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d eshop_catalog"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   basket.database:
     container_name: basket-database
-    image: mongo:6.0
+    image: mongo:8.3
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongo
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
@@ -27,6 +33,20 @@ services:
       - "5481:27017"
     volumes:
       - basket_db:/data/db
+    healthcheck:
+      test: [
+        "CMD", 
+        "mongosh", 
+        "--username", "mongo", 
+        "--password", "${MONGO_PASSWORD}", 
+        "--authenticationDatabase", "admin", 
+        "--eval", "db.adminCommand('ping').ok", 
+        "--quiet"
+      ]
+      interval: 10s
+      timeout: 5s     
+      retries: 3
+      start_period: 15s
 
   basket.cache:
     container_name: basket-cache

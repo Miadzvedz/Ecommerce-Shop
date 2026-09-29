@@ -1,6 +1,6 @@
 services:
 
-# --- DB ---
+# --- CLIENT ---
 
   pgadmin:
     container_name: pgadmin4
@@ -14,6 +14,8 @@ services:
       - catalog.database
       - basket.database
 
+# --- DB ---
+
   catalog.database:
     container_name: catalog-database
     environment:
@@ -24,7 +26,13 @@ services:
     ports:
       - "5400:5432"
     volumes:
-      - catalog_db:/var/lib/postgresql
+      - catalog_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d eshop_catalog"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
    
   basket.database:
     container_name: basket-database
@@ -37,6 +45,20 @@ services:
       - "5401:27017"
     volumes:
       - basket_db:/data/db
+    healthcheck:
+      test: [
+        "CMD", 
+        "mongosh", 
+        "--username", "mongo", 
+        "--password", "${MONGO_PASSWORD}", 
+        "--authenticationDatabase", "admin", 
+        "--eval", "db.adminCommand('ping').ok", 
+        "--quiet"
+      ]
+      interval: 10s
+      timeout: 5s     
+      retries: 3
+      start_period: 15s
 
   basket.cache:
     container_name: basket-cache
@@ -59,7 +81,8 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
-      - catalog.database
+        catalog.database:
+            condition: service_healthy
 
   basket.api:
     container_name: basket-service
@@ -74,5 +97,7 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
-      - basket.database
-      - basket.cache
+      basket.cache:
+        condition: service_started
+      basket.database:
+        condition: service_healthy
