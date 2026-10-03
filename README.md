@@ -1,9 +1,5 @@
 # Ecommerce Shop
 
-### Предисловие
-Этот проект создаётся исключительно в целях практического обучения.
-За основу обучающего материала был взят курс [.NET 8 Microservices: DDD, CQRS, Vertical/Clean Architecture](https://www.udemy.com/course/microservices-architecture-and-implementation-on-dotnet/?couponCode=KEEPLEARNING)
-
 ### Описание
 Проект изначально разрабатывался с использованием .NET 8 но позже был перенесён на .NET 9 с использованием фреймворка ASP.NET Core. Приложение имеет микросервисную архитектуру.
 Приложение будет иметь единую точку входа (gateway) для всех клиентов (сторонние api, web, мобильное приложение). В качестве шлюза будет использоваться [YARP](https://learn.microsoft.com/ru-ru/aspnet/core/fundamentals/servers/yarp/yarp-overview?view=aspnetcore-10.0).
