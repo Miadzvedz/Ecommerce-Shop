@@ -20,11 +20,11 @@ message DeleteDiscountRequest{
 	string productName = 1;
 }
 
-message CreateDiscount{
+message CreateDiscountRequest{
 	string coupon = 1;
 }
 
-message UpdateDiscount{
+message UpdateDiscountRequest{
 	string coupon = 1;
 }
 
