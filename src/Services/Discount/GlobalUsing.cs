@@ -1,3 +1,7 @@
 ﻿global using Discount.API.Services;
 global using Microsoft.EntityFrameworkCore;
+global using Discount.API.Models;
+global using System.Text.Json;
+global using System.Text.Json.Serialization;
+global using Discount.API.Date;
 

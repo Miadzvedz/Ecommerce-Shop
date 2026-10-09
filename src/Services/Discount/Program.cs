@@ -1,4 +1,3 @@
-using Discount.API.Date;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +6,8 @@ builder.Services.AddGrpc();
 builder.Services.AddDbContext<DiscountContext>(opts => opts.UseSqlite(builder.Configuration.GetConnectionString("Database")));
 
 var app = builder.Build();
+
+app.UseMigration();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<DiscountService>();

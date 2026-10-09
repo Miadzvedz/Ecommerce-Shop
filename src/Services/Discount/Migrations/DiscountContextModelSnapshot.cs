@@ -36,6 +36,29 @@ namespace Discount.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Coupons");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 88,
+                            Description = "Strings for electric guitar, Nanoweb Nickel Plated Steel Light-Heavy",
+                            ProductName = "Elixir 12077 10-52"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = 55,
+                            Description = "Strings for electric guitar, Power Slinky RPS Coated Titanium",
+                            ProductName = "Ernie Ball 3120 11-48"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Amount = 70,
+                            Description = "Strings for classical guitar, XT Dynacore Titanium High Tension",
+                            ProductName = "D'addario XTC46TT"
+                        });
                 });
 #pragma warning restore 612, 618
         }

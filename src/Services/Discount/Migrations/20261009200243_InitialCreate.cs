@@ -2,6 +2,8 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Discount.API.Migrations
 {
     /// <inheritdoc />
@@ -23,6 +25,16 @@ namespace Discount.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Coupons", x => x.Id);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Coupons",
+                columns: new[] { "Id", "Amount", "Description", "ProductName" },
+                values: new object[,]
+                {
+                    { 1, 88, "Strings for electric guitar, Nanoweb Nickel Plated Steel Light-Heavy", "Elixir 12077 10-52" },
+                    { 2, 55, "Strings for electric guitar, Power Slinky RPS Coated Titanium", "Ernie Ball 3120 11-48" },
+                    { 3, 70, "Strings for classical guitar, XT Dynacore Titanium High Tension", "D'addario XTC46TT" }
                 });
         }
 

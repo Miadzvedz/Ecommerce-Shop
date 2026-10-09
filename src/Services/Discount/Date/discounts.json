@@ -1,0 +1,21 @@
+﻿[
+  {
+    "Id": "1",
+    "ProductName": "Elixir 12077 10-52",
+    "Description": "Strings for electric guitar, Nanoweb Nickel Plated Steel Light-Heavy",
+    "Amount": "88"
+  },
+  {
+    "Id": "2",
+    "ProductName": "Ernie Ball 3120 11-48",
+    "Description": "Strings for electric guitar, Power Slinky RPS Coated Titanium",
+    "Amount": "55"
+
+  },
+  {
+    "Id": "3",
+    "ProductName": "D'addario XTC46TT",
+    "Description": "Strings for classical guitar, XT Dynacore Titanium High Tension",
+    "Amount": "70"
+  }
+]
