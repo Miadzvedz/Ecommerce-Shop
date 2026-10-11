@@ -4,4 +4,7 @@ global using Discount.API.Models;
 global using System.Text.Json;
 global using System.Text.Json.Serialization;
 global using Discount.API.Date;
-
+global using Discount.API.Protos;
+global using Grpc.Core;
+global using Microsoft.EntityFrameworkCore.ChangeTracking;
+global using Mapster;
