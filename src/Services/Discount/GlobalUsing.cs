@@ -6,5 +6,7 @@ global using System.Text.Json.Serialization;
 global using Discount.API.Date;
 global using Discount.API.Protos;
 global using Grpc.Core;
-global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using Mapster;
+global using FluentValidation;
+global using Calzolari.Grpc.AspNetCore.Validation;
+global using Discount.API.Validators;

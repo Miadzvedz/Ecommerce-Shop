@@ -1,9 +1,20 @@
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options => options.EnableMessageValidation());
+
+
+#region Validators/
+builder.Services.AddScoped<IValidator<DeleteDiscountRequest>, DeleteDiscountRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateDiscountRequest>, CreateDiscountRequestValidator>();
+builder.Services.AddScoped<IValidator<UpdateDiscountRequest>, UpdateDiscountRequestValidator>();
+builder.Services.AddScoped<IValidator<GetDiscountRequest>, GetDiscountRequestValidator>();
+builder.Services.AddGrpcValidation();
+#endregion
+
+
 builder.Services.AddDbContext<DiscountContext>(opts => opts.UseSqlite(builder.Configuration.GetConnectionString("Database")));
+
 
 var app = builder.Build();
 
