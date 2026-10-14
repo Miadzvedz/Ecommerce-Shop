@@ -10,12 +10,14 @@ public class GrpcExceptionInterceptor(ILogger<GrpcExceptionInterceptor> logger) 
     {
         try
         {
-            // Передаем управление дальше (в MediatR / Handler)
             return await continuation(request, context);
         }
         catch (ValidationException ex)
         {
-            logger.LogWarning(ex, "Incorrect data provided.");
+            string errorDetails = string.Join("\n", ex.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}"));
+
+            logger.LogWarning($"Validation failed: {errorDetails}");
+
             throw new RpcException(new Status(StatusCode.InvalidArgument, ex.Message));
         }
         catch (NotFoundException ex)
