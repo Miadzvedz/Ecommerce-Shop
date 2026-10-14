@@ -6,29 +6,29 @@ package discount;
 
 
 service DiscountProtoService {
-	rpc GetDiscount (GetDiscountRequest) returns (CouponModel);
-    rpc CreateDiscount (CreateDiscountRequest) returns (CouponModel);
-    rpc DeleteDiscount (DeleteDiscountRequest) returns (DeleteDiscountResponse);
-    rpc UpdateDiscount (UpdateDiscountRequest) returns (CouponModel);
+	rpc GetCoupon (GetCouponRequest) returns (CouponModel);
+    rpc CreateCoupon (CreateCouponRequest) returns (CouponModel);
+    rpc DeleteCoupon (DeleteCouponRequest) returns (DeleteCouponResponse);
+    rpc UpdateCoupon (UpdateCouponRequest) returns (CouponModel);
 }
 
-message GetDiscountRequest{
+message GetCouponRequest{
 	string productName = 1;
 }
 
-message DeleteDiscountRequest{
+message DeleteCouponRequest{
 	string productName = 1;
 }
 
-message CreateDiscountRequest{
+message CreateCouponRequest{
 	CouponModel coupon = 1;
 }
 
-message UpdateDiscountRequest{
+message UpdateCouponRequest{
 	CouponModel coupon = 1;
 }
 
-message DeleteDiscountResponse{
+message DeleteCouponResponse{
     bool success = 1;
 }
 

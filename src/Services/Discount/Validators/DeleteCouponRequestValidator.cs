@@ -1,8 +1,8 @@
 ﻿namespace Discount.API.Validators;
 
-public class GetDiscountRequestValidator : AbstractValidator<GetDiscountRequest>
+public class DeleteCouponRequestValidator : AbstractValidator<DeleteCouponRequest>
 {
-    public GetDiscountRequestValidator()
+    public DeleteCouponRequestValidator()
     {
         RuleFor(x => x.ProductName)
             .NotEmpty()
