@@ -10,7 +10,6 @@ builder.Services.AddGrpc(options =>
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 
-
 builder.Services.AddDbContext<DiscountContext>(opts => opts.UseSqlite(builder.Configuration.GetConnectionString("Database")));
 
 

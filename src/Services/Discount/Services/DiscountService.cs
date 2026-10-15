@@ -23,7 +23,9 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
          
         logger.LogInformation($"Coupon is success created. ProductName : {couponFromDb.ProductName}");
 
-        return couponFromDb.Adapt<CouponModel>();      
+        var model = couponFromDb.Adapt<CouponModel>();
+
+        return model;      
     }
 
     public override async Task<DeleteCouponResponse> DeleteCoupon(DeleteCouponRequest request, ServerCallContext context)

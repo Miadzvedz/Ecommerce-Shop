@@ -1,4 +1,4 @@
-﻿namespace Basket.API.Date.Settings;
+﻿namespace Basket.API.Data.Settings;
 
 internal class RedisSettings
 {

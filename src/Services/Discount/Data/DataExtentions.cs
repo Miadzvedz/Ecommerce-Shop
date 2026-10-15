@@ -1,4 +1,4 @@
-﻿namespace Discount.API.Date;
+﻿namespace Discount.API.Data;
 
 public static class DataExtentions
 {
