@@ -316,7 +316,7 @@ MediatR идеально подходит для разделения опера
 [BasketServiceTests](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/tests/BasketServiceTests)
 
 ### Модульные тесты
-For unit testing I have the following nugget packages:
+Для модульного тестирования у меня есть следующие NuGet-пакеты:
  - [xUnit](https://www.nuget.org/packages/xunit)
  - [Moq](https://www.nuget.org/packages/Moq)
  - [FluentAssertions](https://www.nuget.org/packages/FluentAssertions.AspNetCore.Mvc)
