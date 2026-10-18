@@ -6,6 +6,6 @@ public class GetCouponRequestValidator : AbstractValidator<GetCouponRequest>
     {
         RuleFor(x => x.ProductName)
             .NotEmpty()
-            .WithMessage("ProductName cannot be empty.");
+            .WithMessage("Product name cannot be empty.");
     }
 }

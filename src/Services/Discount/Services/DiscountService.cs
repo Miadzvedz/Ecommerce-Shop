@@ -1,6 +1,8 @@
 ﻿namespace Discount.API.Services;
 
-public class DiscountService(DiscountContext dbContext, ILogger<DiscountService> logger) : DiscountProtoService.DiscountProtoServiceBase
+
+public class DiscountService(DiscountContext dbContext, ILogger<DiscountService> logger) 
+    : DiscountProtoService.DiscountProtoServiceBase
 {
     public override async Task<CouponModel> GetCoupon(GetCouponRequest request, ServerCallContext context)
     {

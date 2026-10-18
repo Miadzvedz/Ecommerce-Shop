@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Calzolari.Grpc.AspNetCore.Validation" Version="8.2.0" />
+    <PackageReference Include="Google.Api.CommonProtos" Version="2.15.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
     <PackageReference Include="Mapster" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.20" />
