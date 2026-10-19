@@ -83,11 +83,11 @@ services:
     image: ghcr.io/miadzvedz/ecommerce-shop/discount-service:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__Database=Data Source=/app/data/discountdb
+      - ConnectionStrings__Database=Data Source=/app/db/discountdb
     ports:
       - "7002:8080"
     volumes:
-      - discount_db:/app/data
+      - discount_db:/app/db
 
 volumes:
   discount_db:    

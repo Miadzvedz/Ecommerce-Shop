@@ -91,11 +91,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
-      - ConnectionStrings__Database=Data Source=/app/data/discountdb
+      - ConnectionStrings__Database=Data Source=/app/db/discountdb
     ports:
       - "6002:8080"
     volumes:
-      - ./data:/app/data
+      - ./discount_db:/app/db
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
