@@ -2,20 +2,6 @@ name: eshop-dev
 
 services:
 
-# --- CLIENT ---
-
-  pgadmin:
-    container_name: pgadmin4
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN4_PASSWORD}
-    restart: always
-    ports:
-      - "5450:80"
-    depends_on:
-      - catalog.database
-      - basket.database
-
 # --- DB ---
 
   catalog.database:
@@ -105,10 +91,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
-      - ConnectionStrings__Database=Data Source=discountdb
+      - ConnectionStrings__Database=Data Source=/app/data/discountdb
     ports:
       - "6002:8080"
     volumes:
+      - ./data:/app/data
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
