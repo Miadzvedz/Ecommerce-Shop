@@ -1,17 +1,17 @@
+name: eshop-prod
+
 services:
 
   # --- DB ---    
 
   catalog.database:
-    container_name: catalog-database
+    container_name: prod-catalog-database
     image: postgres:16
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=eshop_catalog
     restart: always
-    ports:
-      - "5400:5432"
     volumes:
       - catalog_db:/var/lib/postgresql/data
     healthcheck:
@@ -22,15 +22,13 @@ services:
       start_period: 10s
 
   basket.database:
-    container_name: basket-database
+    container_name: prod-basket-database
     image: mongo:8.3
     environment:
       - MONGO_INITDB_ROOT_USERNAME=mongo
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
       - MONGO_INITDB_ROOT_DATABASE=eshop_basket
     restart: always
-    ports:
-      - "5481:27017"
     volumes:
       - basket_db:/data/db
     healthcheck:
@@ -49,54 +47,49 @@ services:
       start_period: 15s
 
   basket.cache:
-    container_name: basket-cache
-    image: redis:7-alpine
+    container_name: prod-basket-cache
+    image: redis
     command: redis-server --requirepass ${REDIS_PASSWORD}
     restart: always
-    ports:
-      - "6379:6379"
 
   # --- API ---
 
   catalog.api:
-    container_name: catalog-service
+    container_name: prod-catalog-service
     image: ghcr.io/miadzvedz/ecommerce-shop/catalog-service:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Database=Server=catalog.database;Port=5432;Database=eshop_catalog;User Id=postgres;Password=${POSTGRES_PASSWORD}
     ports:
-      - "6000:8080"
+      - "7000:8080"
     depends_on:
       - catalog.database
 
   basket.api:
-    container_name: basket-service
+    container_name: prod-basket-service
     image: ghcr.io/miadzvedz/ecommerce-shop/basket-service:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - MongoDbSettings__ConnectionString=mongodb://mongo:${MONGO_PASSWORD}@basket.database:27017
       - RedisSettings__ConnectionString=basket.cache:6379,password=${REDIS_PASSWORD}
     ports:
-      - "6001:8080"
+      - "7001:8080"
     depends_on:
       - basket.database
       - basket.cache
 
   discount.api:
-    container_name: discount-service
+    container_name: prod-discount-service
     image: ghcr.io/miadzvedz/ecommerce-shop/discount-service:latest
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ConnectionStrings__Database=Data Source=discountdb
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__Database=Data Source=/app/data/discountdb
     ports:
-      - "6002:8080"
+      - "7002:8080"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - discount_db:/app/data
 
 volumes:
+  discount_db:    
   catalog_db:
   basket_db:

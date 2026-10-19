@@ -1,22 +1,18 @@
-name: Ecommerce-shop
-
 services:
-
-# --- CLIENT ---
-
-  pgadmin:
-    image: dpage/pgadmin4
-
 
 # --- DB ---
 
   catalog.database:
     image: postgres:16
+    volumes:
+      - catalog_db:/var/lib/postgresql/data
 
-  basket.database:
+  basket.database:    
     image: mongo:8.3
+    volumes:
+      - basket_db:/data/db
 
-  basket.cache:
+  basket.cache:   
     image: redis
 
 
