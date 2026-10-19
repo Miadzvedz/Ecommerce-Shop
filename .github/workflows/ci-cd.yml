@@ -4,8 +4,16 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - 'postman/**'
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - 'postman/**'
 
 # Allow the pipeline to read the repository contents, as well as the right to publish and update. (GitHub Container Registry (ghcr.io))
 permissions:
@@ -35,6 +43,9 @@ jobs:
             - 'src/BuildingBlocks/**'
             - 'src/Services/Basket/**'
             - 'tests/BasketServiceTests/**'
+          discount:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Discount/**'
 
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
@@ -71,6 +82,11 @@ jobs:
       if: steps.filter.outputs.basket == 'true'
       run: dotnet test tests/BasketServiceTests/BasketServiceTests.csproj --no-restore --configuration Release
 
+    # DISCOUNT
+    - name: Build Discount Service
+      if: steps.filter.outputs.discount == 'true'
+      run: dotnet build src/Services/Basket/Basket.API.csproj --no-restore --configuration Release
+
 
   # === STAGE 2: CI (Docker Build & Push) ===
   deploy-images:
@@ -93,6 +109,9 @@ jobs:
           basket:
             - 'src/BuildingBlocks/**'
             - 'src/Services/Basket/**'
+          discount:
+            - 'src/BuildingBlocks/**'
+            - 'src/Services/Discount/**'
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -133,6 +152,18 @@ jobs:
         tags: |
             ghcr.io/${{ env.REPO_LOWER }}/basket-service:latest
             ghcr.io/${{ env.REPO_LOWER }}/basket-service:${{ github.sha }}
+
+    # Building and deploying the Discount microservice
+    - name: Build and Push Discount Service
+      if: steps.filter.outputs.discount == 'true'
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./src/Services/Discount/Dockerfile
+        push: true
+        tags: |
+            ghcr.io/${{ env.REPO_LOWER }}/discount-service:latest
+            ghcr.io/${{ env.REPO_LOWER }}/discount-service:${{ github.sha }}
 
 
     # === STAGE 3: CD (Deploy To Local Windows) ===
