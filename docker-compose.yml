@@ -1,10 +1,14 @@
+name: Ecommerce-shop
 
 services:
 
-# --- DB ---
+# --- CLIENT ---
 
   pgadmin:
     image: dpage/pgadmin4
+
+
+# --- DB ---
 
   catalog.database:
     image: postgres:16
@@ -30,6 +34,11 @@ services:
       context: .
       dockerfile: src/Services/Basket/Dockerfile
 
+  discount.api:
+    image: ${DOCKER_REGISTRY-}discount-service
+    build:
+      context: .
+      dockerfile: src/Services/Discount/Dockerfile
 
 volumes:
   catalog_db:

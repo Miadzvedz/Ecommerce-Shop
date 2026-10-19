@@ -1,0 +1,15 @@
+﻿global using Calzolari.Grpc.AspNetCore.Validation;
+global using Discount.API.Data;
+global using Discount.API.Models;
+global using Discount.API.Protos;
+global using Discount.API.Services;
+global using Discount.API.Validators;
+global using FluentValidation;
+global using Grpc.Core;
+global using Mapster;
+global using Microsoft.EntityFrameworkCore;
+global using System.Text.Json;
+global using System.Text.Json.Serialization;
+global using BuildingBlocks.Exceptions.Handler;
+global using Microsoft.EntityFrameworkCore.ValueGeneration;
+global using Microsoft.Extensions.Diagnostics.HealthChecks;

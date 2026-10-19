@@ -82,6 +82,21 @@ services:
       - basket.database
       - basket.cache
 
+  discount.api:
+    container_name: discount-service
+    image: ghcr.io/miadzvedz/ecommerce-shop/discount-service:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__Database=Data Source=discountdb
+    ports:
+      - "6002:8080"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
 volumes:
   catalog_db:
   basket_db:

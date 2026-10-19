@@ -403,3 +403,10 @@ FodyWeavers.xsd
 # Configurations with secret passwords
 .env
 .env.prod
+
+# SQLite temporary database files
+*.wal
+*.shm
+*-wal
+*-shm
+

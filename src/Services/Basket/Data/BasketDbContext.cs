@@ -1,4 +1,4 @@
-﻿namespace Basket.API.Date;
+﻿namespace Basket.API.Data;
 
 internal class BasketDbContext : IMongoDbContext<ShoppingCart>
 {

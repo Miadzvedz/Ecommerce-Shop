@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace BuildingBlocks.Exceptions.Handler;
+﻿namespace BuildingBlocks.Exceptions.Handler;
 
 public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger)
     : IExceptionHandler
