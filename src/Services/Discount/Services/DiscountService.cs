@@ -17,8 +17,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
 
     public override async Task<CouponModel> CreateCoupon(CreateCouponRequest request, ServerCallContext context)
     {
-        Coupon coupon = request.Coupon.Adapt<Coupon>() ??
-            throw new RpcException(new Status(StatusCode.InvalidArgument, $"Invalid request: {request}"));
+        Coupon coupon = request.Coupon.Adapt<Coupon>();
 
         Coupon couponFromDb = dbContext.Coupons.Add(coupon).Entity;
         await dbContext.SaveChangesAsync();
@@ -32,9 +31,14 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
 
     public override async Task<DeleteCouponResponse> DeleteCoupon(DeleteCouponRequest request, ServerCallContext context)
     {
-        Coupon coupon = await dbContext.Coupons.FirstOrDefaultAsync(c => c.ProductName == request.ProductName) 
-            ?? throw new RpcException(new Status(StatusCode.NotFound, $"Coupon with ProductName: {request.ProductName} not found."));
+        Coupon? coupon = await dbContext.Coupons.FirstOrDefaultAsync(c => c.ProductName == request.ProductName);
 
+        if (coupon is null)
+        {
+            logger.LogInformation("Coupon with name {Name} is not found.", request.ProductName);
+
+            return new DeleteCouponResponse { Success = false };
+        }
 
         dbContext.Coupons.Remove(coupon);
         bool isSuccess = await dbContext.SaveChangesAsync() > 0;
@@ -48,8 +52,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
 
     public override async Task<CouponModel> UpdateCoupon(UpdateCouponRequest request, ServerCallContext context)
     {
-        Coupon coupon = request.Coupon.Adapt<Coupon>() ??
-            throw new RpcException(new Status(StatusCode.InvalidArgument, $"Invalid request: {request}"));
+        Coupon coupon = request.Coupon.Adapt<Coupon>();
 
         Coupon couponFromDb = dbContext.Coupons.Update(coupon).Entity;
         await dbContext.SaveChangesAsync();

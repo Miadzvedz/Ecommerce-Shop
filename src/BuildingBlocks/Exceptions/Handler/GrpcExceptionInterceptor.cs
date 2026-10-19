@@ -16,14 +16,14 @@ public class GrpcExceptionInterceptor(IServiceProvider serviceProvider, ILogger<
         }
         catch (RpcException ex) 
         {
-            logger.LogWarning(ex,"{Status}. The error in method {Method}",ex.StatusCode, context.Method);
+            logger.LogWarning(ex,"{Status}. Method: {Method}",ex.StatusCode, context.Method);
 
             throw;
         }
         catch (NotFoundException ex)
         {
             logger.LogWarning(ex,
-                "Resource not found. The error in method {Method}",
+                "Resource not found. Method: {Method}",
                 context.Method);
 
             throw new RpcException(new Status(StatusCode.NotFound, ex.Message));
@@ -31,7 +31,7 @@ public class GrpcExceptionInterceptor(IServiceProvider serviceProvider, ILogger<
         catch (BadRequestException ex)
         {
             logger.LogWarning(ex,
-                "Invalid request. The error in method {Method}",
+                "Invalid request. Method: {Method}",
                 context.Method);
 
             throw new RpcException(new Status(StatusCode.InvalidArgument, ex.Message));
@@ -39,20 +39,21 @@ public class GrpcExceptionInterceptor(IServiceProvider serviceProvider, ILogger<
         catch (InternalServerException ex)
         {
             logger.LogError(ex,
-                "Internal server error. The error in method {Method}",
+                "Internal server error. Method: {Method}",
                 context.Method);
 
             throw new RpcException(new Status(StatusCode.Internal, ex.Message));
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, 
-                "Unknown error. The error in method {Method}", 
+            logger.LogError(ex,
+                "Unknown error. Method: {Method}", 
                 context.Method);
 
             throw new RpcException(new Status(StatusCode.Unknown, ex.Message));
         }
     }
+
 
     private async Task Validation<TRequest>(TRequest request, CancellationToken cancellationToken)
     {
@@ -89,4 +90,3 @@ public class GrpcExceptionInterceptor(IServiceProvider serviceProvider, ILogger<
         }       
     }
 }
-
