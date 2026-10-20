@@ -50,6 +50,12 @@ builder.Services.AddStackExchangeRedisCache(setup =>
     setup.InstanceName = cacherSettings.InstanceName;
 });
 
+
+builder.Services.AddGrpcClient<Discount.API.Protos.DiscountProtoService.DiscountProtoServiceClient>(options => 
+{
+    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+});
+
 builder.Services.AddHealthChecks()
     .AddMongoDb(dbSettings.ConnectionString!)
     .AddRedis(cacherSettings.ConnectionString!);
