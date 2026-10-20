@@ -85,7 +85,7 @@ jobs:
     # DISCOUNT
     - name: Build Discount Service
       if: steps.filter.outputs.discount == 'true'
-      run: dotnet build src/Services/Basket/Basket.API.csproj --no-restore --configuration Release
+      run: dotnet build src/Services/Discount/Discount.API.csproj --no-restore --configuration Release
 
 
   # === STAGE 2: CI (Docker Build & Push) ===
