@@ -1,0 +1,183 @@
+﻿[
+  {
+    "Id": "0a1873ad-5bce-4545-af0f-048f5be6da53",
+    "Name": "Gibson 70s Flying V CW",
+    "Description": "The rock icon of the 1970s is back. The Gibson 70s Flying V captures the raw energy, futuristic styling, and scorching tone of classic rock s golden era. Built with a solid mahogany body and a lightning-fast Slim Taper mahogany neck, this guitar delivers incredible sustain and effortless playability across all 22 frets of its rich rosewood fingerboard. Armed with two high-output Gibson humbuckers, it pumps out the signature aggressive crunch and crystalline clarity that defined a generation of heavy riffs. Complete with a striking White finish and hand-crafted with legendary precision in the USA, this Flying V is the ultimate stage weapon for players who demand to stand out.",
+    "Specifications": {
+      "Brand": "Gibson",
+      "Body Shape": "Flying V",
+      "Body": "Mahogany",
+      "Neck": "Mahogany",
+      "Fretboard": "Rosewood",
+      "Frets": 22,
+      "Strings": 6,
+      "Scale": "628 mm",
+      "Pickups": "2 humbuckers",
+      "Colour": "White",
+      "Country Of Origin": "USA"
+    },
+    "ImageFiles": [ "product-1-1.png", "product-1-2.png", "product-1-3.png" ],
+    "Categories": [
+      "Guitar",
+      "Electric Guitar",
+      "Gibson"
+    ],
+    "Price": 2188.0,
+    "Quantity": 1
+  },
+  {
+    "Id": "898d208e-b35c-4df6-8a0c-76b47c5be153",
+    "Name": "Fender FA-125CE II Blk",
+    "Description": "Classic Fender tone meets stage-ready performance. The Fender FA-125CE II Dreadnought Cutaway is a stunning acoustic-electric guitar designed for both beginners and developing players who are ready to take the stage. Featuring a resonant laminated spruce top paired with basswood back and sides, this instrument delivers a lively, vibrant tone with plenty of that iconic bold dreadnought volume. The sleek single-cutaway body style offers effortless access to the upper frets, while the smooth-playing nato neck with a comfortable Slim C profile ensures maximum comfort during long playing sessions. Equipped with a built-in Fender FE-A2 preamp and electronics system, it provides seamless plug-and-play capability for amplifiers or PA systems, complete with an integrated electronic tuner to keep your tuning perfect. Finished in a gorgeous high-gloss Black with a modern 3+3 headstock and a timeless Viking-style bridge, this guitar looks every bit as good as it sounds.",
+    "Specifications": {
+      "Brand": "Fender",
+      "Body shape": "Dreadnought",
+      "Body": "Mahogany",
+      "Neck": "Nato",
+      "Fretboard": "Walnut",
+      "Strings": 6,
+      "Frets": 20,
+      "Scale": "643 mm",
+      "Colour": "Black",
+      "Country Of Origin": "USA"
+    },
+    "ImageFiles": [ "product-2-1.png", "product-2-2.png", "product-2-3.png" ],
+    "Categories": [
+      "Guitar",
+      "Acoustic Guitar",
+      "Fender"
+    ],
+    "Price": 145.0,
+    "Quantity": 1
+  },
+  {
+    "Id": "33914553-37a8-4ea6-bc3a-e5353079d5c5",
+    "Name": "Epiphone Thunderbird IV VSB",
+    "Description": "Turn heads and hold down the low end with an absolute rock legend. First introduced in 1963 by automotive designer Ray Dietrich, the Epiphone Thunderbird IV boasts the iconic reversed zig-zag body shape and unmistakable headstock that commands attention on any stage. Crafted with a solid mahogany body and a robust bolt-on hard maple neck, this 4-string powerhouse delivers incredible natural sustain and punchy midrange resonance. Its fast SlimTaper neck profile is paired with a 20-fret fingerboard, offering comfortable playability across a full 34-inch long scale. Equipped with dual passive Epiphone TB Plus bass humbuckers and a classic 3-point fully adjustable bridge, the Thunderbird IV serves up the raw, aggressive growl and deep, thunderous low-end bite required for classic rock, metal, and punk. Wrapped in a gorgeous high-gloss Vintage Sunburst finish with contrasting black hardware, this bass has all the timeless attitude and sonic power you will ever need.",
+    "Specifications": {
+      "Brand": "Epiphone",
+      "Body shape": "Thunderbird",
+      "Body": "Mahogany",
+      "Neck": "Maple",
+      "Neck profile": "SlimTaper",
+      "Fretboard": "Rosewood",
+      "Strings": 4,
+      "Frets": 20,
+      "Scale": "864 mm",
+      "Nut width": "44 mm",
+      "Pickups": "2x Epiphone TB Plus Humbuckers",
+      "Bridge": "3-Point Fully Adjustable",
+      "Colour": "Vintage Sunburst",
+      "Country Of Origin": "China"
+    },
+    "ImageFiles": [ "product-3-1.png", "product-3-2.png", "product-3-3.png", "product-3-4.png" ],
+    "Categories": [
+      "Guitar",
+      "Electric Bass"
+    ],
+    "Price": 369.0,
+    "Quantity": 2
+  },
+  {
+    "Id": "05efe62c-4e7e-4e6d-92c8-3fa4b39ac67d",
+    "Name": "Elixir 12077 Nanoweb Light-Heavy 10-52",
+    "Description": "Experience iconic presence, punch, and crisp personality with strings built to outlast the rest. The Elixir 12077 Nanoweb Light-Heavy set is the ultimate hybrid choice for electric guitarists, combining a flexible light top for effortlessly bending solos with a heavy bottom for tight, aggressive rhythm riffing. Engineered with a premium steel core and nickel-plated steel wrap wire, these 6 strings feature an ultra-thin Nanoweb coating that shields the entire string from sweat, debris, and corrosion without sacrificing that traditional crisp, organic feel. Additionally, the plain steel strings are treated with an innovative Anti-Rust plating to preserve tone life even further, dramatically reducing finger squeaks and the hassle of frequent string changes. Whether you play heavy rock, blues, or alternative in drop tunings, this USA-made set delivers unmatched tuning stability, smooth playability, and a consistent, long-lasting performance.",
+    "Specifications": {
+      "Brand": "Elixir",
+      "Series": "Nanoweb",
+      "Tension": "10-52",
+      "Gauges detail": ".010, .013, .017, .032, .042, .052",
+      "Strings count": "6",
+      "Core material": "Steel",
+      "Winding material": "Nickel-Plated Steel",
+      "Winding type": "Round Wound",
+      "Coating": "Ultra-thin Nanoweb & Anti-Rust",
+      "Country Of Origin": "USA"
+    },
+    "ImageFiles": [ "product-4-1.png" ],
+    "Categories": [
+      "Accessories",
+      "Guitar Strings",
+      "Electric Guitar Strings"
+    ],
+    "Price": 15.99,
+    "Quantity": 23
+  },
+  {
+    "Id": "96a315a3-0f5a-4313-a34e-73bae7f42a98",
+    "Name": "Ernie Ball 3120 Coated Titanium Power Slinky 11-48",
+    "Description": "Unlock maximum durability and legendary tone with the cutting-edge technology of Ernie Ball Coated Titanium strings. The Ernie Ball 3120 Power Slinky set combines world-class craftsmanship with unmatched protection. All wound strings are treated with a micro-thin enamel nanotechnology that repels sweat, moisture, and oils to preserve that fresh, vibrant out-of-the-box tone for up to five times longer. For the ultimate defense against breakage, the plain strings feature a patented RPS (Reinforced Plain Steel) titanium wire wrap around the ball end, preventing slippage and ensuring superior tuning stability. Offering a firm, punchy feel, this medium-tension 11-48 hybrid set delivers rich low-end growl and articulate mids, making it the perfect choice for heavy rock and blues players who demand reliability in both standard and drop tunings.",
+    "Specifications": {
+      "Brand": "Ernie Ball",
+      "Type": "Electric Guitar Strings",
+      "Series": "Slinky Coated Titanium RPS",
+      "Gauge": "Power Slinky (Medium Tension)",
+      "Tension": "11-48",
+      "Gauges detail": ".011, .014, .018p, .028, .038, .048",
+      "Strings count": "6",
+      "Core material": "High-Carbon Steel (Hexagonal)",
+      "Winding material": "Coated Nickel-Plated Steel",
+      "Winding type": "Round Wound",
+      "Coating": "Enamel Nanotechnology & Titanium RPS Reinforcement",
+      "Country Of Origin": "USA"
+    },
+    "ImageFiles": [ "product-5-1.png"],
+    "Categories": [
+      "Accessories",
+      "Guitar Strings",
+      "Electric Guitar Strings"
+    ],
+    "Price": 17.50,
+    "Quantity": 35
+  },
+  {
+    "Id": "0c5e52ed-9984-4360-8d14-696fac78a1b8",
+    "Name": "Ernie Ball 2833 Hybrid Slinky Bass 45-105",
+    "Description": "Hold down the rhythm with the world's favorite round-wound bass strings. The Ernie Ball 2833 Hybrid Slinky set delivers the punchy, bright, and mid-forward tone that has defined modern bass playing for decades. Combining the punchy low-end of a medium set with the flexible playability of a light top, these 4 strings are perfect for everything from aggressive rock picking to fast, percussive funk slap. Crafted with precision in the USA, they feature a nickel-plated steel wrap wire wound over a specially formulated hexagonal high-carbon steel core. This classic design provides unmatched harmonic richness, incredible natural resonance, and long-lasting durability. Uncoated for a traditional, organic finger feel, this hybrid set ensures maximum tuning stability and a commanding sonic presence on stage or in the studio.",
+    "Specifications": {
+      "Brand": "Ernie Ball",
+      "Type": "Bass Guitar Strings",
+      "Series": "Slinky Bass",
+      "Gauge": "Hybrid Slinky (Light Top / Medium Bottom)",
+      "Tension": "45-105",
+      "Gauges detail": ".045, .065, .085, .105",
+      "Strings count": "4",
+      "Core material": "High-Carbon Steel (Hexagonal)",
+      "Winding material": "Nickel-Plated Steel",
+      "Winding type": "Round Wound",
+      "Scale compatibility": "Long Scale (Up to 34\")",
+      "Country Of Origin": "USA"
+    },
+    "ImageFiles": [ "product-6-1.png", "product-6-2.png" ],
+    "Categories": [
+      "Accessories",
+      "Guitar Strings",
+      "Bass Guitar Strings"
+    ],
+    "Price": 24.90,
+    "Quantity": 47
+  },
+  {
+    "Id": "c8634286-f0e2-42bf-8a31-d3632558866d",
+    "Name": "Dunlop Tortex Standard 0.73 mm Yellow (12-Pack)",
+    "Description": "Launch your riffs with the pick that redefined the industry. First introduced in 1981 as a high-quality replacement for tortoise shell, the Dunlop Tortex Standard is the premier choice for top musicians worldwide. Crafted from highly durable, flexible Delrin material, these picks feature a signature matte surface that provides an unparalleled non-slip grip, even during intense, sweat-heavy stage performances. Delivering a bright, crisp attack with excellent snap and memory, the 0.73 mm medium gauge offers the perfect compromise for fluid alternative picking, heavy down-stroking, and smooth acoustic strumming. Hand-crafted in the USA and featuring the iconic turtle logo, this convenient 12-pack ensures you always have maximum control, articulation, and legendary durability right at your fingertips.",
+    "Specifications": {
+      "Material": "Tortex (Delrin)",
+      "Gauge": "Medium",
+      "Thickness": "0.73 mm",
+      "Shape": "Standard (351)",
+      "Color": "Yellow",
+      "Package count": "12 picks",
+      "Texture": "Matte Non-Slip",
+      "Country Of Origin": "USA"
+    },
+    "ImageFiles": [ "product-7-1.png" ],
+    "Categories": [
+      "Accessories",
+      "Picks",
+      "Guitar Picks"
+    ],
+    "Price": 6.90,
+    "Quantity": 150
+  }
+]

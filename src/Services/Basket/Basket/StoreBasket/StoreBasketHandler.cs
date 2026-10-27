@@ -30,7 +30,7 @@ internal class StoreBasketHandler(IBasketRepository repository, DiscountProtoSer
 {
     public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
     {
-        //communication with Discount.API via the gRPC protocol
+        // communication with Discount.API via the gRPC protocol
         await ApplyDiscount(command, cancellationToken);
 
         // store basket in database (if exist - update, if not exist - new create)
