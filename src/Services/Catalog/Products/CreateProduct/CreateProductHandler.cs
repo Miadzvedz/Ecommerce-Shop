@@ -1,7 +1,14 @@
 ﻿namespace Catalog.API.Products.CreateProduct;
 
 
-public record CreateProductCommand(string Name, List<string> Category, string Description, string ImageFile, decimal Price)
+public record CreateProductCommand(
+    string Name,
+    List<string> Category,
+    Dictionary<string, string> Specifications, 
+    string Description,
+    List<string> ImageFile,
+    decimal Price, 
+    int Quantity)
     : ICommand<CreateProductResult>;
 public record CreateProductResult(Guid Id);
 
@@ -14,7 +21,6 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
             .NotEmpty().WithMessage("Is required")
             .Length(1, 100).WithMessage("must be between 1 and 100 characters");
         RuleFor(i => i.Category).NotEmpty().WithMessage("Is required");
-        RuleFor(i => i.ImageFile).NotEmpty().WithMessage("Is required");
         RuleFor(i => i.Price).GreaterThan(0).WithMessage("Must be greater than 0");
     }
 }
@@ -28,9 +34,11 @@ internal class CreateProductHandler(IDocumentSession session)
         var product = new Product
         {
             Name = command.Name,
-            Category = command.Category,
+            Categories = command.Category,
             Description = command.Description,
-            ImageFile = command.ImageFile,
+            ImageFiles = command.ImageFile,
+            Specifications = command.Specifications,
+            Quantity = command.Quantity,
             Price = command.Price
         };
 

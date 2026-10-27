@@ -9,10 +9,10 @@ public class UpdateProductEndpointTests(IntegrationFixture integrationFixture) :
     {
         // Arrange
         var handler = Services.GetRequiredService<IRequestHandler<CreateProductCommand, CreateProductResult>>();
-        var command = new CreateProductCommand("Name", ["cat1", "cat2"], "description", "image.jpeg", 100);
+        var command = new CreateProductCommand("Name", ["cat1", "cat2"], new() { ["brand"] = "LTD", ["color"] = "white" }, "description", ["1.jpeg", "2.jpeg"], 100, 2);
         var result = await handler.Handle(command, CancellationToken.None);
 
-        var updateProduct = new UpdateProductRequest(result.Id, "NewName", ["cat3"], "new description", " new image.jpeg", 129);
+        var updateProduct = new UpdateProductRequest(result.Id, "NewName", ["cat3"], "new description", new() { ["brand"] = "LTD", ["color"] = "white" }, ["1new.jpeg", "2new.jpeg"], 129, 1);
         var content = new StringContent(JsonConvert.SerializeObject(updateProduct), Encoding.UTF8, "application/json");
 
         //Act
@@ -32,7 +32,7 @@ public class UpdateProductEndpointTests(IntegrationFixture integrationFixture) :
     public async Task UpdateProduct_ReturnStatusCode404_WhenProductIsNotFound()
     {
         // Arrange
-        var updateProduct = new UpdateProductRequest(Guid.NewGuid(), "new name", ["cat3"], "new description", " new image.jpeg", 129);
+        var updateProduct = new UpdateProductRequest(Guid.NewGuid(), "NewName", ["cat3"], "new description", new() { ["brand"] = "LTD", ["color"] = "white" }, ["1new.jpeg", "2new.jpeg"], 129, 1);
         var content = new StringContent(JsonConvert.SerializeObject(updateProduct), Encoding.UTF8, "application/json");
 
         //Act

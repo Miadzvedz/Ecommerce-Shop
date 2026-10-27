@@ -7,7 +7,7 @@ public class GetProductByIdEndpointTests(IntegrationFixture integrationFixture) 
     {
         // Arrange
         var handler = Services.GetRequiredService<IRequestHandler<CreateProductCommand, CreateProductResult>>();
-        var command = new CreateProductCommand("Name", ["cat1", "cat2"], "description", "image.jpeg", 100);
+        var command = new CreateProductCommand("Guitar", ["cat1", "cat2"], new() { ["brand"] = "LTD", ["color"] = "white" }, "description", ["1.jpeg", "2.jpeg"], 100, 2);
         var result = await handler.Handle(command, CancellationToken.None);
         var uri = new Uri($"https://localhost/products/{result.Id}");
 
