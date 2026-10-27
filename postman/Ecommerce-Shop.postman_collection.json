@@ -1,186 +1,306 @@
 {
-	"info": {
-		"_postman_id": "a3c4ab7b-45ae-4d99-9b07-073d807fc072",
-		"name": "Ecommerce-Shop",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "24639029"
-	},
-	"item": [
-		{
-			"name": "Catalog",
-			"item": [
-				{
-					"name": "create product",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"Name\": \"test name\",\r\n    \"Category\": [\"cat_1\", \"cat_2\"],\r\n    \"Description\": \"test description\",\r\n    \"ImageFile\": \"test image file\",\r\n    \"Price\": 666\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{catalog_url}}/products",
-						"description": "Adding new product to database"
-					},
-					"response": []
-				},
-				{
-					"name": "update product",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"Id\": \"019463d8-0fcb-4115-a022-8e3372d36158\",\r\n    \"Name\": \"test update name\",\r\n    \"Category\": [\"cat_1\"],\r\n    \"Description\": \"test update description\",\r\n    \"ImageFile\": \"test update image file\",\r\n    \"Price\": 777\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{catalog_url}}/products",
-						"description": "Update product information"
-					},
-					"response": []
-				},
-				{
-					"name": "delete product",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": "{{catalog_url}}/products/00000000-0000-0000-0000-000000000000",
-						"description": "Remove a specific product from database"
-					},
-					"response": []
-				},
-				{
-					"name": "get products",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{catalog_url}}/products",
-						"description": "Get some products with default paged list (default page number: 1, default page size: 10)"
-					},
-					"response": []
-				},
-				{
-					"name": "get product by id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{catalog_url}}/products/91785770-7411-405c-a38a-270e62d9879b",
-						"description": "Get a specific product"
-					},
-					"response": []
-				},
-				{
-					"name": "get product by category",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{catalog_url}}/products/category/Electric Bass",
-						"description": "Get some products with specific category"
-					},
-					"response": []
-				},
-				{
-					"name": "get page products",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{catalog_url}}/products?pageNumber=1&pageSize=2",
-							"host": [
-								"{{catalog_url}}"
-							],
-							"path": [
-								"products"
-							],
-							"query": [
-								{
-									"key": "pageNumber",
-									"value": "1"
-								},
-								{
-									"key": "pageSize",
-									"value": "2"
-								}
-							]
-						},
-						"description": "Get some products with specific page number and page size"
-					},
-					"response": []
-				},
-				{
-					"name": "health check",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{catalog_url}}/health",
-						"description": "Checking available database"
-					},
-					"response": []
-				}
-			],
-			"description": "CRUD operations for Catalog API"
-		},
-		{
-			"name": "Basket",
-			"item": [
-				{
-					"name": "get basket by user id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{basket_url}}/basket/ddb6ddc0-9206-4ae1-acc0-cc4e017640c2"
-					},
-					"response": []
-				},
-				{
-					"name": "store basket",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"Cart\": \r\n        {\r\n            \"UserId\": \"ddb6ddc0-9206-4ae1-acc0-cc4e017640c2\",\r\n            \"Items\": [\r\n                {\r\n                    \"Quantity\": 2,\r\n                    \"Price\": 500,\r\n                    \"ProductName\": \"product-1 test name\",\r\n                    \"ProductId\": \"019463d8-0fcb-4115-a022-8e3372d36158\"\r\n                },\r\n                {\r\n                    \"Quantity\": 1,\r\n                    \"Price\": 350,\r\n                    \"ProductName\": \"product-2 test name\",\r\n                    \"ProductId\": \"019463d8-0fcb-4115-a022-8e3372d12309\"\r\n                }\r\n            ],\r\n            \"TotalPrice\": 1350\r\n        }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{basket_url}}/basket"
-					},
-					"response": []
-				},
-				{
-					"name": "delete basket by user id",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": "{{basket_url}}/basket/ddb6ddc0-9206-4ae1-acc0-cc4e017640c2"
-					},
-					"response": []
-				},
-				{
-					"name": "health check",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{basket_url}}/health"
-					},
-					"response": []
-				}
-			],
-			"description": "CRUD operations for Basket API"
-		}
-	]
+  "info": {
+    "_postman_id": "a3c4ab7b-45ae-4d99-9b07-073d807fc072",
+    "name": "Ecommerce-Shop (http)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "24639029"
+  },
+  "item": [
+    {
+      "name": "Catalog",
+      "item": [
+        {
+          "name": "create product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Name\": \"Fender American Pro II Stratocaster 3TS\",\r\n    \"Description\": \"The Fender American Professional II Stratocaster draws from over sixty years of innovation, inspiration and evolution to meet the demands of today's working player. Our popular Deep C neck now sports smooth rolled fingerboard edges, a Super-Natural satin finish and a newly sculpted neck heel for a supremely comfortable feel and easy access to the upper register. New V-Mod II Stratocaster single-coil pickups are more articulate than ever while delivering the bell-like chime and warmth the Strat is known for. Built with an alder body and handcrafted in Corona, California, this Stratocaster sets a new standard for professional instruments.\",\r\n    \"Specifications\": {\r\n      \"Brand\": \"Fender\",\r\n      \"Body Shape\": \"Stratocaster\",\r\n      \"Body\": \"Alder\",\r\n      \"Neck\": \"Maple\",\r\n      \"Fretboard\": \"Rosewood\",\r\n      \"Frets\": 22,\r\n      \"Strings\": 6,\r\n      \"Scale\": \"648 mm\",\r\n      \"Pickups\": \"3 single-coils\",\r\n      \"Colour\": \"3-Color Sunburst\",\r\n      \"Country Of Origin\": \"USA\"\r\n    },\r\n    \"ImageFiles\": [ \"product-2-1.png\", \"product-2-2.png\", \"product-2-3.png\" ],\r\n    \"Categories\": [\r\n      \"Guitar\",\r\n      \"Electric Guitar\",\r\n      \"Fender\"\r\n    ],\r\n    \"Price\": 1899.0,\r\n    \"Quantity\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{catalog_url}}/products",
+              "host": [
+                "{{catalog_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Adding new product to database"
+          },
+          "response": []
+        },
+        {
+          "name": "update product",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Id\": \"0a1873ad-5bce-4545-af0f-048f5be6da53\",\r\n    \"Name\": \"Gibson 70s Flying V CW\",\r\n    \"Description\": \"The rock icon of the 1970s is back. The Gibson 70s Flying V captures the raw energy, futuristic styling, and scorching tone of classic rock s golden era. Built with a solid mahogany body and a lightning-fast Slim Taper mahogany neck, this guitar delivers incredible sustain and effortless playability across all 22 frets of its rich rosewood fingerboard. Armed with two high-output Gibson humbuckers, it pumps out the signature aggressive crunch and crystalline clarity that defined a generation of heavy riffs. Complete with a striking White finish and hand-crafted with legendary precision in the USA, this Flying V is the ultimate stage weapon for players who demand to stand out.\",\r\n    \"Specifications\": {\r\n      \"Brand\": \"Gibson\",\r\n      \"Body Shape\": \"Flying V\",\r\n      \"Body\": \"Mahogany\",\r\n      \"Neck\": \"Mahogany\",\r\n      \"Fretboard\": \"Rosewood\",\r\n      \"Frets\": 22,\r\n      \"Strings\": 6,\r\n      \"Scale\": \"628 mm\",\r\n      \"Pickups\": \"2 humbuckers\",\r\n      \"Colour\": \"White\",\r\n      \"Country Of Origin\": \"USA\"\r\n    },\r\n    \"ImageFiles\": [ \"product-1-1.png\", \"product-1-2.png\", \"product-1-3.png\", \"product-1-4.png\" ],\r\n    \"Categories\": [\r\n      \"Guitar\",\r\n      \"Electric Guitar\",\r\n      \"Gibson\"\r\n    ],\r\n    \"Price\": 2299.0,\r\n    \"Quantity\": 7\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{catalog_url}}/products",
+              "host": [
+                "{{catalog_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Update product information"
+          },
+          "response": []
+        },
+        {
+          "name": "delete product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{catalog_url}}/products/00000000-0000-0000-0000-000000000000",
+              "host": [
+                "{{catalog_url}}"
+              ],
+              "path": [
+                "products",
+                "00000000-0000-0000-0000-000000000000"
+              ]
+            },
+            "description": "Remove a specific product from database"
+          },
+          "response": []
+        },
+        {
+          "name": "get products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{catalog_url}}/products",
+              "host": [
+                "{{catalog_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Get some products with default paged list (default page number: 1, default page size: 10)"
+          },
+          "response": []
+        },
+        {
+          "name": "get product by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{catalog_url}}/products/0a1873ad-5bce-4545-af0f-048f5be6da53",
+              "host": [
+                "{{catalog_url}}"
+              ],
+              "path": [
+                "products",
+                "0a1873ad-5bce-4545-af0f-048f5be6da53"
+              ]
+            },
+            "description": "Get a specific product"
+          },
+          "response": []
+        },
+        {
+          "name": "get product by category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{catalog_url}}/products/category/Electric Guitar",
+              "host": [
+                "{{catalog_url}}"
+              ],
+              "path": [
+                "products",
+                "category",
+                "Electric Guitar"
+              ]
+            },
+            "description": "Get some products with specific category"
+          },
+          "response": []
+        },
+        {
+          "name": "get page products",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{catalog_url}}/products?pageNumber=1&pageSize=2",
+              "host": [
+                "{{catalog_url}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "pageNumber",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "2"
+                }
+              ]
+            },
+            "description": "Get some products with specific page number and page size"
+          },
+          "response": []
+        },
+        {
+          "name": "health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{catalog_url}}/health",
+              "host": [
+                "{{catalog_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Checking available database"
+          },
+          "response": []
+        }
+      ],
+      "description": "CRUD operations for Catalog API"
+    },
+    {
+      "name": "Basket",
+      "item": [
+        {
+          "name": "get basket by user id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{basket_url}}/basket/fa8da534-496a-466c-8f63-bf02e4e1108b",
+              "host": [
+                "{{basket_url}}"
+              ],
+              "path": [
+                "basket",
+                "fa8da534-496a-466c-8f63-bf02e4e1108b"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "store basket (update)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Cart\": \r\n        {\r\n            \"UserId\": \"fa8da534-496a-466c-8f63-bf02e4e1108b\",\r\n            \"Items\": [\r\n                {\r\n                    \"ProductId\": \"0a1873ad-5bce-4545-af0f-048f5be6da53\",\r\n                    \"ProductName\": \"Gibson 70s Flying V CW\",\r\n                    \"Price\": 2188.0,\r\n                    \"Quantity\": \"1\"\r\n                },\r\n                {\r\n                    \"ProductId\": \"96a315a3-0f5a-4313-a34e-73bae7f42a98\",\r\n                    \"ProductName\": \"Ernie Ball 3120 Coated Titanium Power Slinky 11-48\",\r\n                    \"Price\": 17.50,\r\n                    \"Quantity\": \"2\"\r\n                },\r\n                {\r\n                    \"ProductId\": \"0c5e52ed-9984-4360-8d14-696fac78a1b8\",\r\n                    \"ProductName\": \"Ernie Ball 2833 Hybrid Slinky Bass 45-105\",\r\n                    \"Price\": 24.90,\r\n                    \"Quantity\": \"1\"\r\n                },\r\n                {\r\n                    \"ProductId\": \"c8634286-f0e2-42bf-8a31-d3632558866d\",\r\n                    \"ProductName\": \"Dunlop Tortex Standard 0.73 mm Yellow (12-Pack)\",\r\n                    \"Price\": 6.90,\r\n                    \"Quantity\": \"7\"\r\n                }\r\n            ]\r\n        }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{basket_url}}/basket",
+              "host": [
+                "{{basket_url}}"
+              ],
+              "path": [
+                "basket"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "store basket (create)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"Cart\": \r\n        {\r\n            \"UserId\": \"e50b7c10-98d3-44a1-aee1-de22729b88f1\",\r\n            \"Items\": [\r\n                {\r\n                    \"ProductId\": \"898d208e-b35c-4df6-8a0c-76b47c5be153\",\r\n                    \"ProductName\": \"Fender FA-125CE II Blk\",\r\n                    \"Price\": 145.0,\r\n                    \"Quantity\": \"1\"\r\n                }\r\n            ]\r\n        }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{basket_url}}/basket",
+              "host": [
+                "{{basket_url}}"
+              ],
+              "path": [
+                "basket"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete basket by user id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{basket_url}}/basket/e50b7c10-98d3-44a1-aee1-de22729b88f1",
+              "host": [
+                "{{basket_url}}"
+              ],
+              "path": [
+                "basket",
+                "e50b7c10-98d3-44a1-aee1-de22729b88f1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{basket_url}}/health",
+              "host": [
+                "{{basket_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "CRUD operations for Basket API"
+    }
+  ]
 }
