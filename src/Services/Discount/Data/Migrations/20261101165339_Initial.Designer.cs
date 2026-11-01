@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Discount.API.Data.Migrations
 {
     [DbContext(typeof(DiscountContext))]
-    [Migration("20261015083832_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20261101165339_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.20");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.21");
 
             modelBuilder.Entity("Discount.API.Models.Coupon", b =>
                 {
@@ -44,23 +44,23 @@ namespace Discount.API.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 88,
+                            Amount = 5,
                             Description = "Strings for electric guitar, Nanoweb Nickel Plated Steel Light-Heavy",
-                            ProductName = "Elixir 12077 10-52"
+                            ProductName = "Elixir 12077 Nanoweb Light-Heavy 10-52"
                         },
                         new
                         {
                             Id = 2,
-                            Amount = 55,
-                            Description = "Strings for electric guitar, Power Slinky RPS Coated Titanium",
-                            ProductName = "Ernie Ball 3120 11-48"
+                            Amount = 12,
+                            Description = "Dunlop Tortex Standard guitar picks are the ultimate industry standard, legendary for their extreme durability, bright tone, and iconic matte finish.",
+                            ProductName = "Dunlop Tortex Standard 0.73 mm"
                         },
                         new
                         {
                             Id = 3,
-                            Amount = 70,
-                            Description = "Strings for classical guitar, XT Dynacore Titanium High Tension",
-                            ProductName = "D'addario XTC46TT"
+                            Amount = 10,
+                            Description = "Strings for classical guitar, Hold down the rhythm with the world's favorite round-wound bass strings.",
+                            ProductName = "Ernie Ball 2833 Hybrid Slinky Bass 45-105"
                         });
                 });
 #pragma warning restore 612, 618

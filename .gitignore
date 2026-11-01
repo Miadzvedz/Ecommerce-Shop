@@ -410,3 +410,6 @@ FodyWeavers.xsd
 *-wal
 *-shm
 
+# SQLite database folder
+discount_db/
+

@@ -1,6 +1,4 @@
-﻿using Basket.API.Basket.StoreBasket;
-
-namespace BasketServiceTests.UnitTests;
+﻿namespace BasketServiceTests.UnitTests;
 
 public class StoreBasketHandlerTests
 {
@@ -24,7 +22,9 @@ public class StoreBasketHandlerTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ShoppingCart(cart.UserId));
 
-        var handler = new StoreBasketHandler(_repositoryMock.Object);
+        var mockGrpcClient = new Mock<DiscountProtoService.DiscountProtoServiceClient>();
+
+        var handler = new StoreBasketHandler(_repositoryMock.Object, mockGrpcClient.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);

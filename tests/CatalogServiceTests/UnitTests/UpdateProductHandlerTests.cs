@@ -13,7 +13,7 @@ public class UpdateProductHandlerTests
     public async Task Handle_Should_ReturnSuccessResult_WhenProductSuccessfullyUpdated()
     {
         // Arrange
-        var command = new UpdateProductCommand(Guid.NewGuid(), "Test", ["cat1", "cat2"], "Test", new() { ["brand"] = "LTD", ["color"] = "white" }, ["1.jpeg", "2.jpeg"], 100, 3);
+        var command = new UpdateProductCommand(Guid.NewGuid(), "Test", ["cat1", "cat2"], "Test", new() { ["Brand"] = "LTD", ["Color"] = "white" }, ["1.jpeg", "2.jpeg"], 100, 3);
 
         _documentSessionMock.Setup(
             x => x.LoadAsync<Product>(
@@ -42,7 +42,7 @@ public class UpdateProductHandlerTests
     public async Task Handle_Should_ThrowException_WhenProductNotFound()
     {
         // Arrange
-        var command = new UpdateProductCommand(Guid.NewGuid(), "Test", ["cat1", "cat2"], "Test", new() { ["brand"] = "LTD", ["color"] = "white" }, ["1.jpeg", "2.jpeg"], 100, 3);
+        var command = new UpdateProductCommand(Guid.NewGuid(), "Test", ["cat1", "cat2"], "Test", new() { ["Brand"] = "LTD", ["Color"] = "white" }, ["1.jpeg", "2.jpeg"], 100, 3);
         Product? product = null;
 
         _documentSessionMock.Setup(

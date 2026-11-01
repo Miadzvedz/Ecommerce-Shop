@@ -13,7 +13,7 @@ public class CreateProductHandlerTests
     public async Task Handle_Should_ReturnSuccessResult_WhenProductSuccessfullyСreated()
     {
         // Arrange
-        var command = new CreateProductCommand("Guitar", ["cat1", "cat2"], new() { ["brand"] = "LTD", ["color"] = "white" }, "description", ["1.jpeg", "2.jpeg"], 100, 2);
+        var command = new CreateProductCommand("Guitar", ["cat1", "cat2"], new() { ["Brand"] = "LTD", ["Color"] = "white" }, "description", ["1.jpeg", "2.jpeg"], 100, 2);
 
         _documentSessionMock.Setup(x => x.Store(It.IsAny<Product>()));
         _documentSessionMock.Setup(x => x.SaveChangesAsync(CancellationToken.None));
