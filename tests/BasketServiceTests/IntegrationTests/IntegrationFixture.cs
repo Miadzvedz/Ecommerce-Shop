@@ -28,10 +28,12 @@ public class IntegrationFixture : IAsyncLifetime
 public class MockApp : WebApplicationFactory<Program>
 {
     private readonly string _connectionDatabase;
+    public Mock<DiscountProtoService.DiscountProtoServiceClient> DiscountClientMock { get; private set; }
 
     public MockApp(string connectionDatabase)
     {
         _connectionDatabase = connectionDatabase;
+        DiscountClientMock = new Mock<DiscountProtoService.DiscountProtoServiceClient>();
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -42,7 +44,16 @@ public class MockApp : WebApplicationFactory<Program>
             cfg.Configure<IMongoClient>(opt => 
                 opt.GetDatabase("db").GetCollection<ShoppingCart>("baskets"));
 
-            cfg.AddScoped<IBasketRepository, BasketRepository>();           
+            cfg.AddScoped<IBasketRepository, BasketRepository>();
+
+            // remove real grpc client from basket.api 
+            var descriptor = cfg.SingleOrDefault(d => d.ServiceType == typeof(DiscountProtoService.DiscountProtoServiceClient));
+            if (descriptor != null) 
+            { 
+                cfg.Remove(descriptor);
+            }
+
+            cfg.AddSingleton(DiscountClientMock.Object);
         });
     }
 }
@@ -62,6 +73,26 @@ public class IntegrationTest(IntegrationFixture integrationFixture) : IAsyncLife
     public HttpClient Client => IntegrationFixture.Client;
     public required IServiceScope Scope { get; set; }
     public IServiceProvider Services => Scope.ServiceProvider;
+
+
+    protected void SetupDiscountClientMock(string productName, int discountAmount)
+    {
+        IntegrationFixture.App.DiscountClientMock
+            .Setup(x => x.GetCouponAsync(
+                It.IsAny<GetCouponRequest>(),
+                It.IsAny<CallOptions>()))
+            .Returns(CreateAsyncUnaryCall(new CouponModel { ProductName = productName, Amount = discountAmount }));
+    }
+
+    private AsyncUnaryCall<T> CreateAsyncUnaryCall<T>(T response)
+    {
+        return new AsyncUnaryCall<T>(
+            Task.FromResult(response),
+            Task.FromResult(new Metadata()),
+            () => Status.DefaultSuccess,
+            () => new Metadata(),
+            () => { });
+    }
 
 
     public Task InitializeAsync()

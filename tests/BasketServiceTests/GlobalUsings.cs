@@ -19,3 +19,4 @@ global using Microsoft.AspNetCore.Mvc;
 global using Newtonsoft.Json;
 global using System.Text;
 global using Discount.API.Protos;
+global using Grpc.Core;
