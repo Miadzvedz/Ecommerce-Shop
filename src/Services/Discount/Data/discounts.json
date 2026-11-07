@@ -9,13 +9,12 @@
     "Id": "2",
     "ProductName": "Dunlop Tortex Standard 0.73 mm",
     "Description": "Dunlop Tortex Standard guitar picks are the ultimate industry standard, legendary for their extreme durability, bright tone, and iconic matte finish.",
-    "Amount": "12"
-
+    "Amount": "3"
   },
   {
     "Id": "3",
     "ProductName": "Ernie Ball 2833 Hybrid Slinky Bass 45-105",
     "Description": "Strings for classical guitar, Hold down the rhythm with the world's favorite round-wound bass strings.",
-    "Amount": "10"
+    "Amount": "4"
   }
 ]

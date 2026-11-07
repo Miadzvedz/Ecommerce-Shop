@@ -4,6 +4,23 @@
 public class DiscountService(DiscountContext dbContext, ILogger<DiscountService> logger) 
     : DiscountProtoService.DiscountProtoServiceBase
 {
+    public override async Task<GetCouponsResponse> GetCoupons(GetCouponsRequest request, ServerCallContext context)
+    {
+        if(request.ProductNames.Count == 0)
+            return new GetCouponsResponse();
+
+        List<Coupon> coupons = await dbContext.Coupons
+            .Where(x => request.ProductNames.Contains(x.ProductName))
+            .ToListAsync(context.CancellationToken);
+
+        GetCouponsResponse response = new GetCouponsResponse();
+        response.Coupons.AddRange(coupons.Adapt<List<CouponModel>>());
+
+        logger.LogInformation("Found {Count} coupons in database", request.ProductNames.Count);
+
+        return response;
+    }
+
     public override async Task<CouponModel> GetCoupon(GetCouponRequest request, ServerCallContext context)
     {
         Coupon coupon = await dbContext.

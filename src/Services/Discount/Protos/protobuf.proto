@@ -6,10 +6,19 @@ package discount;
 
 
 service DiscountProtoService {
+    rpc GetCoupons (GetCouponsRequest) returns (GetCouponsResponse);
 	rpc GetCoupon (GetCouponRequest) returns (CouponModel);
     rpc CreateCoupon (CreateCouponRequest) returns (CouponModel);
     rpc DeleteCoupon (DeleteCouponRequest) returns (DeleteCouponResponse);
     rpc UpdateCoupon (UpdateCouponRequest) returns (CouponModel);
+}
+
+message GetCouponsResponse {
+  repeated CouponModel coupons = 1;
+}
+
+message GetCouponsRequest {
+  repeated string productNames = 1;
 }
 
 message GetCouponRequest{

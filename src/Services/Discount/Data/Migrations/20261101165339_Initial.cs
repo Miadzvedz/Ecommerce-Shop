@@ -33,8 +33,8 @@ namespace Discount.API.Data.Migrations
                 values: new object[,]
                 {
                     { 1, 5, "Strings for electric guitar, Nanoweb Nickel Plated Steel Light-Heavy", "Elixir 12077 Nanoweb Light-Heavy 10-52" },
-                    { 2, 12, "Dunlop Tortex Standard guitar picks are the ultimate industry standard, legendary for their extreme durability, bright tone, and iconic matte finish.", "Dunlop Tortex Standard 0.73 mm" },
-                    { 3, 10, "Strings for classical guitar, Hold down the rhythm with the world's favorite round-wound bass strings.", "Ernie Ball 2833 Hybrid Slinky Bass 45-105" }
+                    { 2, 3, "Dunlop Tortex Standard guitar picks are the ultimate industry standard, legendary for their extreme durability, bright tone, and iconic matte finish.", "Dunlop Tortex Standard 0.73 mm" },
+                    { 3, 4, "Strings for classical guitar, Hold down the rhythm with the world's favorite round-wound bass strings.", "Ernie Ball 2833 Hybrid Slinky Bass 45-105" }
                 });
         }
 

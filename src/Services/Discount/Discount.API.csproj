@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\discounts.json~RFffdecbd.TMP" />
     <None Remove="Protos\protobuf.proto" />
   </ItemGroup>
 

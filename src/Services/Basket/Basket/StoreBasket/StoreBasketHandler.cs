@@ -1,8 +1,4 @@
-﻿using Discount.API.Protos;
-using Grpc.Core;
-using System.Threading;
-
-namespace Basket.API.Basket.StoreBasket;
+﻿namespace Basket.API.Basket.StoreBasket;
 
 public record StoreBasketCommand(ShoppingCart Cart) : ICommand<StoreBasketResult>;
 public record StoreBasketResult(Guid UserId);
@@ -42,17 +38,24 @@ internal class StoreBasketHandler(IBasketRepository repository, DiscountProtoSer
 
     private async Task ApplyDiscount(StoreBasketCommand command, CancellationToken cancellationToken = default)
     {
+        List<string> productNames = command.Cart.Items.Select(x => x.ProductName).ToList(); 
+
+        CallOptions options = new CallOptions()
+            .WithDeadline(DateTime.UtcNow.AddSeconds(3))
+            .WithCancellationToken(cancellationToken);
+
+        GetCouponsRequest request = new() { ProductNames = { productNames }};
+
+        GetCouponsResponse response = await discountClient.GetCouponsAsync(request, options);  
+
+        var couponDictionary = response.Coupons.ToDictionary(x => x.ProductName, x => x.Amount);
+
         foreach (var item in command.Cart.Items)
         {
-            CallOptions options = new CallOptions()
-                .WithDeadline(DateTime.UtcNow.AddSeconds(3))
-                .WithCancellationToken(cancellationToken);
-
-            GetCouponRequest getRequest = new GetCouponRequest { ProductName = item.ProductName };
-
-            CouponModel coupon = await discountClient.GetCouponAsync(getRequest, options);
-
-            item.Price -= coupon.Amount;
+            if (couponDictionary.TryGetValue(item.ProductName, out var discount))
+            {
+                item.Price -= discount;
+            }
         }
     }
 }
