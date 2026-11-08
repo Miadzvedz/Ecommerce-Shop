@@ -75,13 +75,16 @@ public class IntegrationTest(IntegrationFixture integrationFixture) : IAsyncLife
     public IServiceProvider Services => Scope.ServiceProvider;
 
 
-    protected void SetupDiscountClientMock(string productName, int discountAmount)
+    protected void SetupDiscountClientMock(List<CouponModel> coupons)
     {
+        var response = new GetCouponsResponse();
+        response.Coupons.AddRange(coupons);
+
         IntegrationFixture.App.DiscountClientMock
-            .Setup(x => x.GetCouponAsync(
-                It.IsAny<GetCouponRequest>(),
+            .Setup(x => x.GetCouponsAsync(
+                It.IsAny<GetCouponsRequest>(),
                 It.IsAny<CallOptions>()))
-            .Returns(CreateAsyncUnaryCall(new CouponModel { ProductName = productName, Amount = discountAmount }));
+            .Returns(CreateAsyncUnaryCall(response));
     }
 
     private AsyncUnaryCall<T> CreateAsyncUnaryCall<T>(T response)

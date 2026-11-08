@@ -23,7 +23,8 @@ public class StoreBasketEndpointTests(IntegrationFixture integrationFixture) : I
         var request = new StoreBasketRequest(cart);
         var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-        SetupDiscountClientMock("LTD M300FM", 15);
+        var coupons = new List<CouponModel>() { new() { ProductName = "LTD M300FM", Amount = 15 } };       
+        SetupDiscountClientMock(coupons);
 
         //Act
         var response = await Client.PostAsync(uri, content, CancellationToken.None);
