@@ -50,6 +50,12 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
 
 # --- API ---
 
@@ -89,7 +95,7 @@ services:
       discount.api:
         condition: service_started
       basket.cache:
-        condition: service_started
+        condition: service_healthy
       basket.database:
         condition: service_healthy
 
