@@ -51,9 +51,20 @@ builder.Services.AddStackExchangeRedisCache(setup =>
 });
 
 
-builder.Services.AddGrpcClient<Discount.API.Protos.DiscountProtoService.DiscountProtoServiceClient>(options => 
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options => 
 {
     options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+}).ConfigurePrimaryHttpMessageHandler(() =>
+{
+    var handler = new HttpClientHandler();
+
+    //Turn OFF SSL certification exception in Development Enviroment
+    if (builder.Environment.IsDevelopment())
+    {
+        handler.ServerCertificateCustomValidationCallback = 
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+    }
+    return handler;
 });
 
 builder.Services.AddHealthChecks()

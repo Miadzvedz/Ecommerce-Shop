@@ -62,6 +62,7 @@ services:
       - ConnectionStrings__Database=Server=catalog.database;Port=5432;Database=eshop_catalog;User Id=postgres;Password=${POSTGRES_PASSWORD}
     ports:
       - "7000:8080"
+      - "7070:8081"
     depends_on:
       - catalog.database
 
@@ -74,9 +75,14 @@ services:
       - RedisSettings__ConnectionString=basket.cache:6379,password=${REDIS_PASSWORD}
     ports:
       - "7001:8080"
+      - "7071:8081"
     depends_on:
-      - basket.database
-      - basket.cache
+      discount.api:
+        condition: service_started
+      basket.cache:
+        condition: service_started
+      basket.database:
+        condition: service_healthy
 
   discount.api:
     container_name: prod-discount-service
@@ -86,6 +92,7 @@ services:
       - ConnectionStrings__Database=Data Source=/app/db/discountdb
     ports:
       - "7002:8080"
+      - "7072:8081"
     volumes:
       - discount_db:/app/db
 
