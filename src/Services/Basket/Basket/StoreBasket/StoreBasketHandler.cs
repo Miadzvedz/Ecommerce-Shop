@@ -35,26 +35,37 @@ internal class StoreBasketHandler(IBasketRepository repository, DiscountProtoSer
         return new StoreBasketResult(basket.UserId);
     }
 
-
+    // applies a discount to the product if the quantity is greater than or equal to the minimum threshold (MinimumQuantity)
     private async Task ApplyDiscount(StoreBasketCommand command, CancellationToken cancellationToken = default)
     {
-        List<string> productNames = command.Cart.Items.Select(x => x.ProductName).ToList(); 
+        List<string> productIds = command.Cart.Items.Select(x => x.ProductId.ToString()).ToList(); 
+        GetDiscountsRequest request = new() { ProductIds = { productIds } };
 
         CallOptions options = new CallOptions()
             .WithDeadline(DateTime.UtcNow.AddSeconds(3))
             .WithCancellationToken(cancellationToken);
 
-        GetCouponsRequest request = new() { ProductNames = { productNames }};
+        GetDiscountsResponse discountResponse = await discountClient.GetDiscountsAsync(request, options);
 
-        GetCouponsResponse response = await discountClient.GetCouponsAsync(request, options);  
 
-        var couponDictionary = response.Coupons.ToDictionary(x => x.ProductName, x => x.Amount);
+        Dictionary<Guid, DiscountModel> dictionaryDiscount = discountResponse.Discounts
+            .Select(model => new {
+                IsValid = Guid.TryParse(model.ProductId, out var guid),
+                Guid = guid,
+                Model = model
+            })
+            .Where(x => x.IsValid)
+            .ToList()
+            .ToDictionary(x => x.Guid, x => x.Model);
 
-        foreach (var item in command.Cart.Items)
+        foreach (var item in command.Cart.Items) 
         {
-            if (couponDictionary.TryGetValue(item.ProductName, out var discount))
+            if(dictionaryDiscount.TryGetValue(item.ProductId, out var discount))
             {
-                item.Price -= discount;
+                if(discount.MinimumQuantity >= item.Quantity)
+                {
+                    item.Price -= item.Price * (discount.Percentage / 100m);
+                }
             }
         }
     }
