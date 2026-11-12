@@ -10,6 +10,12 @@ public class DiscountContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Models.Discount>(entity =>
+        {
+            entity.Property(e => e.ProductId)
+                  .HasConversion<string>();
+        });
+
         modelBuilder.Entity<Models.Discount>()
             .HasData(LoadDiscounts());
     }
