@@ -18,15 +18,15 @@ message GetDiscountsResponse {
 }
 
 message GetDiscountsRequest {
-  repeated string productIds = 1;
+  repeated string product_ids = 1;
 }
 
 message GetDiscountRequest{
-	string productId = 1;
+	string product_id = 1;
 }
 
 message DeleteDiscountRequest{
-	string productId = 1;
+	string product_id = 1;
 }
 
 message CreateDiscountRequest{
@@ -44,7 +44,9 @@ message DeleteDiscountResponse{
 message DiscountModel
 {
     int32 id = 1;
-    string productId = 2;
-    string description = 3;
-    int32 amount = 4;
+    string product_id = 2;
+    string product_name = 3;
+    string description = 4;
+    int32 percentage = 5;
+    int32 minimum_quantity = 6;
 }

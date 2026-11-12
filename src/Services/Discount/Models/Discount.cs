@@ -7,12 +7,12 @@ public class Discount
     public string ProductName { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public int Percentage { get; set; } = 0;
-    public int MinimumQuantity { get; set; } = 1;
+    public int MinimumQuantity { get; set; } = 0;
 
 
     public static Discount NoDiscount() => new()
     {
-        Description = "No Discount Description",
+        Description = "No Discount",
     };
 }
 
