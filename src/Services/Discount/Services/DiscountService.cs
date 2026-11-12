@@ -6,15 +6,12 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
 {
     public override async Task<GetDiscountsResponse> GetDiscounts(GetDiscountsRequest request, ServerCallContext context)
     {
-        if (request.ProductIds.Count == 0)
-            return new GetDiscountsResponse();
-
-        /*
-        request.ProductIds.ToList()
-            .ForEach(x => Guid.TryParse(x, out Guid result));*/
+        List<Guid> productGuids = request.ProductIds
+            .Select(Guid.Parse)
+            .ToList();
 
         List<Models.Discount> discounts = await dbContext.Discounts
-            .Where(x => request.ProductIds.Contains(x.ProductId))
+            .Where(x => productGuids.Contains(x.ProductId))
             .ToListAsync(context.CancellationToken);
 
         GetDiscountsResponse response = new GetDiscountsResponse();
@@ -27,8 +24,10 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
 
     public override async Task<DiscountModel> GetDiscount(GetDiscountRequest request, ServerCallContext context)
     {
+        Guid id = Guid.Parse(request.ProductId);
+
         Models.Discount discount = await dbContext.
-            Discounts.FirstOrDefaultAsync(c => c.ProductId == request.ProductId)
+            Discounts.FirstOrDefaultAsync(c => c.ProductId == id)
             ?? Models.Discount.NoDiscount();
 
         logger.LogInformation($"Discount has been obtained for the Id: {discount.Id}, ProductName: {discount.ProductName}");
@@ -52,11 +51,13 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
 
     public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
     {
-        Models.Discount? discount = await dbContext.Discounts.FirstOrDefaultAsync(c => c.ProductName == request.ProductName);
+        Guid id = Guid.Parse(request.ProductId);
+
+        Models.Discount? discount = await dbContext.Discounts.FirstOrDefaultAsync(c => c.ProductId == id);
 
         if (discount is null)
         {
-            logger.LogInformation("Discount with name {Name} is not found.", request.ProductName);
+            logger.LogInformation("Discount with Id: {ID} is not found.", request.ProductId);
 
             return new DeleteDiscountResponse { Success = false };
         }
@@ -66,7 +67,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
 
         logger.LogInformation("Discount is {status} deleted. ProductName : {productName}",
             isSuccess ? "successfully" : "unsuccessfully",
-            request.ProductName);
+            request.ProductId);
 
         return new DeleteDiscountResponse { Success = isSuccess };
     }

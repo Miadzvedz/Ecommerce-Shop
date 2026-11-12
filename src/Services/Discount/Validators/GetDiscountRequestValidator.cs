@@ -6,6 +6,8 @@ public class GetDiscountRequestValidator : AbstractValidator<GetDiscountRequest>
     {
         RuleFor(x => x.ProductId)
             .NotEmpty()
-            .WithMessage("ProductId cannot be empty.");
+            .WithMessage("ProductId cannot be empty.")
+            .Must(id => Guid.TryParse(id, out _))
+            .WithMessage("ID must be valid GUID.");
     }
 }
