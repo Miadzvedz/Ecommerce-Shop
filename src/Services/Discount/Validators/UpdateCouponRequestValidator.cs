@@ -1,19 +1,27 @@
 ﻿namespace Discount.API.Validators;
 
-public class UpdateCouponRequestValidator : AbstractValidator<UpdateCouponRequest>
+public class UpdateDiscountRequestValidator : AbstractValidator<UpdateDiscountRequest>
 {
-    public UpdateCouponRequestValidator()
+    public UpdateDiscountRequestValidator()
     {
-        RuleFor(x => x.Coupon.ProductName)
+        RuleFor(x => x.Discount.ProductId)
+            .NotEmpty()
+            .WithMessage("ProductId cannot be empty.");
+
+        RuleFor(x => x.Discount.ProductName)
             .NotEmpty()
             .WithMessage("ProductName cannot be empty.");
 
-        RuleFor(x => x.Coupon.Description)
+        RuleFor(x => x.Discount.Description)
             .NotEmpty()
             .WithMessage("Description cannot be empty.");
 
-        RuleFor(x => x.Coupon.Amount)
-            .GreaterThan(0)
-            .WithMessage("Amount cannot be less or equals 0.");
+        RuleFor(x => x.Discount.Percentage)
+            .GreaterThanOrEqualTo(1)
+            .WithMessage("Percentage cannot be less or equals 1.");
+
+        RuleFor(x => x.Discount.MinimumQuantity)
+            .GreaterThanOrEqualTo(1)
+            .WithMessage("MinimumQuantity cannot be less or equals 1.");
     }
 }

@@ -4,78 +4,82 @@
 public class DiscountService(DiscountContext dbContext, ILogger<DiscountService> logger) 
     : DiscountProtoService.DiscountProtoServiceBase
 {
-    public override async Task<GetCouponsResponse> GetCoupons(GetCouponsRequest request, ServerCallContext context)
+    public override async Task<GetDiscountsResponse> GetDiscounts(GetDiscountsRequest request, ServerCallContext context)
     {
-        if(request.ProductNames.Count == 0)
-            return new GetCouponsResponse();
+        if(request.ProductIds.Count == 0)
+            return new GetDiscountsResponse();
 
-        List<Coupon> coupons = await dbContext.Coupons
-            .Where(x => request.ProductNames.Contains(x.ProductName))
+        /*
+        request.ProductIds.ToList()
+            .ForEach(x => Guid.TryParse(x, out Guid result));*/
+
+        List<Models.Discount> discounts = await dbContext.Discounts
+            .Where(x => request.ProductIds.Contains(x.ProductId))
             .ToListAsync(context.CancellationToken);
 
-        GetCouponsResponse response = new GetCouponsResponse();
-        response.Coupons.AddRange(coupons.Adapt<List<CouponModel>>());
+        GetDiscountsResponse response = new GetDiscountsResponse();
+        response.Discounts.AddRange(discounts.Adapt<List<DiscountModel>>());
 
-        logger.LogInformation("Found {Count} coupons in database", request.ProductNames.Count);
+        logger.LogInformation("Found {Count} discounts in database", request.ProductIds.Count);
 
         return response;
     }
 
-    public override async Task<CouponModel> GetCoupon(GetCouponRequest request, ServerCallContext context)
+    public override async Task<DiscountModel> GetDiscount(GetDiscountRequest request, ServerCallContext context)
     {
-        Coupon coupon = await dbContext.
-            Coupons.FirstOrDefaultAsync(c => c.ProductName == request.ProductName) 
-            ?? Coupon.NoDiscount();
+        Models.Discount discount = await dbContext.
+            Discounts.FirstOrDefaultAsync(c => c.ProductId == request.ProductId) 
+            ?? Models.Discount.NoDiscount();
 
-        logger.LogInformation($"Coupon has been obtained for the ProductName: {coupon.ProductName}, Amount: {coupon.Amount}.");
+        logger.LogInformation($"Discount has been obtained for the Id: {discount.Id}, ProductName: {discount.ProductName}");
 
-        return coupon.Adapt<CouponModel>();
+        return discount.Adapt<DiscountModel>();
     }
 
-    public override async Task<CouponModel> CreateCoupon(CreateCouponRequest request, ServerCallContext context)
+    public override async Task<DiscountModel> CreateDiscount(CreateDiscountRequest request, ServerCallContext context)
     {
-        Coupon coupon = request.Coupon.Adapt<Coupon>();
+        Models.Discount discount = request.Discount.Adapt<Models.Discount>();
 
-        Coupon couponFromDb = dbContext.Coupons.Add(coupon).Entity;
+        Models.Discount discountFromDb = dbContext.Discounts.Add(discount).Entity;
         await dbContext.SaveChangesAsync();
          
-        logger.LogInformation($"Coupon is success created. ProductName : {couponFromDb.ProductName}");
+        logger.LogInformation($"Discount is success created. ProductName : {discountFromDb.ProductName}");
 
-        var model = couponFromDb.Adapt<CouponModel>();
+        var model = discountFromDb.Adapt<DiscountModel>();
 
         return model;      
     }
 
-    public override async Task<DeleteCouponResponse> DeleteCoupon(DeleteCouponRequest request, ServerCallContext context)
+    public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
     {
-        Coupon? coupon = await dbContext.Coupons.FirstOrDefaultAsync(c => c.ProductName == request.ProductName);
+        Models.Discount? discount = await dbContext.Discounts.FirstOrDefaultAsync(c => c.ProductName == request.ProductName);
 
-        if (coupon is null)
+        if (discount is null)
         {
-            logger.LogInformation("Coupon with name {Name} is not found.", request.ProductName);
+            logger.LogInformation("Discount with name {Name} is not found.", request.ProductName);
 
-            return new DeleteCouponResponse { Success = false };
+            return new DeleteDiscountResponse { Success = false };
         }
 
-        dbContext.Coupons.Remove(coupon);
+        dbContext.Discounts.Remove(discount);
         bool isSuccess = await dbContext.SaveChangesAsync() > 0;
 
-        logger.LogInformation("Coupon is {status} deleted. ProductName : {productName}", 
+        logger.LogInformation("Discount is {status} deleted. ProductName : {productName}", 
             isSuccess ? "successfully" : "unsuccessfully",
             request.ProductName);
 
-        return new DeleteCouponResponse { Success = isSuccess };
+        return new DeleteDiscountResponse { Success = isSuccess };
     }
 
-    public override async Task<CouponModel> UpdateCoupon(UpdateCouponRequest request, ServerCallContext context)
+    public override async Task<DiscountModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
     {
-        Coupon coupon = request.Coupon.Adapt<Coupon>();
+        Models.Discount discount = request.Discount.Adapt<Models.Discount>();
 
-        Coupon couponFromDb = dbContext.Coupons.Update(coupon).Entity;
+        Models.Discount discountFromDb = dbContext.Discounts.Update(discount).Entity;
         await dbContext.SaveChangesAsync();
 
-        logger.LogInformation($"Coupon is success updated. ProductName : {couponFromDb.ProductName}");
+        logger.LogInformation($"Discount is success updated. ProductName : {discountFromDb.ProductName}");
 
-        return couponFromDb.Adapt<CouponModel>();
+        return discountFromDb.Adapt<DiscountModel>();
     }
 }

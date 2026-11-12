@@ -6,45 +6,45 @@ package discount;
 
 
 service DiscountProtoService {
-    rpc GetCoupons (GetCouponsRequest) returns (GetCouponsResponse);
-	rpc GetCoupon (GetCouponRequest) returns (CouponModel);
-    rpc CreateCoupon (CreateCouponRequest) returns (CouponModel);
-    rpc DeleteCoupon (DeleteCouponRequest) returns (DeleteCouponResponse);
-    rpc UpdateCoupon (UpdateCouponRequest) returns (CouponModel);
+    rpc GetDiscounts (GetDiscountsRequest) returns (GetDiscountsResponse);
+	rpc GetDiscount (GetDiscountRequest) returns (DiscountModel);
+    rpc CreateDiscount (CreateDiscountRequest) returns (DiscountModel);
+    rpc DeleteDiscount (DeleteDiscountRequest) returns (DeleteDiscountResponse);
+    rpc UpdateDiscount (UpdateDiscountRequest) returns (DiscountModel);
 }
 
-message GetCouponsResponse {
-  repeated CouponModel coupons = 1;
+message GetDiscountsResponse {
+  repeated DiscountModel discounts = 1;
 }
 
-message GetCouponsRequest {
-  repeated string productNames = 1;
+message GetDiscountsRequest {
+  repeated string productIds = 1;
 }
 
-message GetCouponRequest{
-	string productName = 1;
+message GetDiscountRequest{
+	string productId = 1;
 }
 
-message DeleteCouponRequest{
-	string productName = 1;
+message DeleteDiscountRequest{
+	string productId = 1;
 }
 
-message CreateCouponRequest{
-	CouponModel coupon = 1;
+message CreateDiscountRequest{
+	DiscountModel discount = 1;
 }
 
-message UpdateCouponRequest{
-	CouponModel coupon = 1;
+message UpdateDiscountRequest{
+	DiscountModel discount = 1;
 }
 
-message DeleteCouponResponse{
+message DeleteDiscountResponse{
     bool success = 1;
 }
 
-message CouponModel
+message DiscountModel
 {
     int32 id = 1;
-    string productName = 2;
+    string productId = 2;
     string description = 3;
     int32 amount = 4;
 }

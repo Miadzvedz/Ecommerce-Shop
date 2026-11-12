@@ -2,7 +2,7 @@
 
 public class DiscountContext : DbContext
 {
-    public DbSet<Coupon> Coupons { get; set; } = default!;
+    public DbSet<Models.Discount> Discounts { get; set; } = default!;
 
     public DiscountContext(DbContextOptions<DiscountContext> options) : base(options)
     {
@@ -10,17 +10,17 @@ public class DiscountContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Coupon>()
-            .HasData(LoadCoupons());
+        modelBuilder.Entity<Models.Discount>()
+            .HasData(LoadDiscounts());
     }
 
 
-    private IEnumerable<Coupon> LoadCoupons()
+    private IEnumerable<Models.Discount> LoadDiscounts()
     {
         string path = Path.Combine(AppContext.BaseDirectory, "Data", "discounts.json");
 
         if (!File.Exists(path)) 
-            throw new FileNotFoundException($"Critical database initialization error: the required coupons file was not found at the path: '{path}'.");
+            throw new FileNotFoundException($"Critical database initialization error: the required discounts file was not found at the path: '{path}'.");
 
         using FileStream stream = File.OpenRead(path);
 
@@ -30,7 +30,7 @@ public class DiscountContext : DbContext
             NumberHandling = JsonNumberHandling.AllowReadingFromString
         };
 
-        return JsonSerializer.Deserialize<List<Coupon>>(stream, options) 
+        return JsonSerializer.Deserialize<List<Models.Discount>>(stream, options) 
             ?? throw new JsonException($"The file '{path}' is empty or contains invalid JSON.");
     }
 }

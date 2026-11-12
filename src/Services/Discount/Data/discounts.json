@@ -1,20 +1,30 @@
 ﻿[
   {
     "Id": "1",
+    "ProductId": "05efe62c-4e7e-4e6d-92c8-3fa4b39ac67d",
     "ProductName": "Elixir 12077 Nanoweb Light-Heavy 10-52",
-    "Description": "Strings for electric guitar, Nanoweb Nickel Plated Steel Light-Heavy",
-    "Amount": "5"
+    "Description": "Discount for National Unity Day",
+    "Percentage": "15"
   },
   {
     "Id": "2",
+    "ProductId": "c8634286-f0e2-42bf-8a31-d3632558866d",
     "ProductName": "Dunlop Tortex Standard 0.73 mm",
-    "Description": "Dunlop Tortex Standard guitar picks are the ultimate industry standard, legendary for their extreme durability, bright tone, and iconic matte finish.",
-    "Amount": "3"
+    "Description": "Valentine’s Day Discount",
+    "Percentage": "5"
   },
   {
     "Id": "3",
+    "ProductId": "0c5e52ed-9984-4360-8d14-696fac78a1b8",
     "ProductName": "Ernie Ball 2833 Hybrid Slinky Bass 45-105",
-    "Description": "Strings for classical guitar, Hold down the rhythm with the world's favorite round-wound bass strings.",
-    "Amount": "4"
+    "Description": "Christmas Discount.",
+    "Percentage": "10"
+  },
+  {
+    "Id": "4",
+    "ProductId": "0a1873ad-5bce-4545-af0f-048f5be6da53",
+    "ProductName": "Gibson 70s Flying V CW",
+    "Description": "Independence Day Discount.",
+    "Percentage": "10"
   }
 ]

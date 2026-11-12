@@ -1,11 +1,11 @@
 ﻿namespace Discount.API.Validators;
 
-public class GetCouponRequestValidator : AbstractValidator<GetCouponRequest>
+public class GetDiscountRequestValidator : AbstractValidator<GetDiscountRequest>
 {
-    public GetCouponRequestValidator()
+    public GetDiscountRequestValidator()
     {
-        RuleFor(x => x.ProductName)
+        RuleFor(x => x.ProductId)
             .NotEmpty()
-            .WithMessage("Product name cannot be empty.");
+            .WithMessage("ProductId cannot be empty.");
     }
 }
