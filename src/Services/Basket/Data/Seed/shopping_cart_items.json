@@ -1,0 +1,23 @@
+﻿{
+  "UserId": "fa8da534-496a-466c-8f63-bf02e4e1108b",
+  "Items": [
+    {
+      "ProductId": "0a1873ad-5bce-4545-af0f-048f5be6da53",
+      "ProductName": "Gibson 70s Flying V CW",
+      "Price": 2188.0,
+      "Quantity": "1"
+    },
+    {
+      "ProductId": "05efe62c-4e7e-4e6d-92c8-3fa4b39ac67d",
+      "ProductName": "Elixir 12077 Nanoweb Light-Heavy 10-52",
+      "Price": 15.99,
+      "Quantity": "2"
+    },
+    {
+      "ProductId": "c8634286-f0e2-42bf-8a31-d3632558866d",
+      "ProductName": "Dunlop Tortex Standard 0.73 mm",
+      "Price": 6.90,
+      "Quantity": "4"
+    }
+  ]
+}

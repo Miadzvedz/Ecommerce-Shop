@@ -22,10 +22,22 @@ public class StoreBasketCommandHandler : AbstractValidator<StoreBasketCommand>
     }
 }
 
-internal class StoreBasketHandler(IBasketRepository repository) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
+internal class StoreBasketHandler(
+    IBasketRepository repository,
+    IDiscountClient discountClient,
+    IDiscountCalculator discountCalculator) 
+    : ICommandHandler<StoreBasketCommand, StoreBasketResult>
 {
     public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
     {
+        // communication with Discount.API via the gRPC protocol
+        List<string> productIds = command.Cart.Items.Select(x => x.ProductId.ToString()).ToList();
+        List<DiscountDto> discountList = await discountClient.GetDiscountsAsync(productIds, cancellationToken);
+
+        // apply discount calculations
+        discountCalculator.ApplyDiscounts(command.Cart.Items, discountList);
+
+        // store basket in database (if exist - update, if not exist - new create)
         var basket = await repository.StoreBasket(command.Cart, cancellationToken);
 
         return new StoreBasketResult(basket.UserId);

@@ -1,3 +1,5 @@
+using Basket.API.Basket.StoreBasket;
+
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
 var dbSettings = builder.Configuration.GetRequiredSection(nameof(MongoDbSettings)).Get<MongoDbSettings>()!;
@@ -49,6 +51,26 @@ builder.Services.AddStackExchangeRedisCache(setup =>
     setup.Configuration = cacherSettings.ConnectionString;
     setup.InstanceName = cacherSettings.InstanceName;
 });
+
+
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options => 
+{
+    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+}).ConfigurePrimaryHttpMessageHandler(() =>
+{
+    var handler = new HttpClientHandler();
+
+    //Turn OFF SSL certification exception in Development Enviroment
+    if (builder.Environment.IsDevelopment())
+    {
+        handler.ServerCertificateCustomValidationCallback = 
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+    }
+    return handler;
+});
+
+builder.Services.AddScoped<IDiscountClient, DiscountClient>();
+builder.Services.AddScoped<IDiscountCalculator, DiscountCalculator>();
 
 builder.Services.AddHealthChecks()
     .AddMongoDb(dbSettings.ConnectionString!)

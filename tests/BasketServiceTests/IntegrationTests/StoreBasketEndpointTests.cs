@@ -7,21 +7,24 @@ public class StoreBasketEndpointTests(IntegrationFixture integrationFixture) : I
     [Fact]
     public async Task StoreBasket_ReturnStatusCode201_WhenCreatedSuccess()
     {
-        // Arrange
+        // Arrange      
         var cart = new ShoppingCart() 
         {           
             UserId = Guid.NewGuid(),           
             Items = [
                 new ShoppingCartItem() 
                 { 
-                    Quantity = 2, 
-                    Price = 100, 
+                    Quantity = 1, 
+                    Price = 700, 
                     ProductName = "LTD M300FM",
                     ProductId = Guid.NewGuid(),
                 }],    
         };
         var request = new StoreBasketRequest(cart);
         var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+        var coupons = new List<DiscountModel>() { new() { ProductName = "LTD M300FM", Percentage = 15, MinimumQuantity = 1 } };       
+        SetupDiscountClientMock(coupons);
 
         //Act
         var response = await Client.PostAsync(uri, content, CancellationToken.None);

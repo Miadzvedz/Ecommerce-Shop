@@ -1,7 +1,15 @@
 ﻿namespace Catalog.API.Products.UpdateProduct;
 
 
-public record UpdateProductRequest(Guid Id, string Name, List<string> Category, string Description, string ImageFile, decimal Price);
+public record UpdateProductRequest(
+    Guid Id,
+    string Name,
+    List<string> Categories, 
+    string Description,
+    Dictionary<string, string> Specifications,
+    List<string> ImageFiles, 
+    decimal Price, 
+    int Quantity);
 public record UpdateProductResponse(bool isSuccess);
 
 

@@ -6,36 +6,47 @@ package discount;
 
 
 service DiscountProtoService {
-	rpc GetCoupon (GetCouponRequest) returns (CouponModel);
-    rpc CreateCoupon (CreateCouponRequest) returns (CouponModel);
-    rpc DeleteCoupon (DeleteCouponRequest) returns (DeleteCouponResponse);
-    rpc UpdateCoupon (UpdateCouponRequest) returns (CouponModel);
+    rpc GetDiscounts (GetDiscountsRequest) returns (GetDiscountsResponse);
+	rpc GetDiscount (GetDiscountRequest) returns (DiscountModel);
+    rpc CreateDiscount (CreateDiscountRequest) returns (DiscountModel);
+    rpc DeleteDiscount (DeleteDiscountRequest) returns (DeleteDiscountResponse);
+    rpc UpdateDiscount (UpdateDiscountRequest) returns (DiscountModel);
 }
 
-message GetCouponRequest{
-	string productName = 1;
+message GetDiscountsResponse {
+  repeated DiscountModel discounts = 1;
 }
 
-message DeleteCouponRequest{
-	string productName = 1;
+message GetDiscountsRequest {
+  repeated string product_ids = 1;
 }
 
-message CreateCouponRequest{
-	CouponModel coupon = 1;
+message GetDiscountRequest{
+	string product_id = 1;
 }
 
-message UpdateCouponRequest{
-	CouponModel coupon = 1;
+message DeleteDiscountRequest{
+	string product_id = 1;
 }
 
-message DeleteCouponResponse{
+message CreateDiscountRequest{
+	DiscountModel discount = 1;
+}
+
+message UpdateDiscountRequest{
+	DiscountModel discount = 1;
+}
+
+message DeleteDiscountResponse{
     bool success = 1;
 }
 
-message CouponModel
+message DiscountModel
 {
     int32 id = 1;
-    string productName = 2;
-    string description = 3;
-    int32 amount = 4;
+    string product_id = 2;
+    string product_name = 3;
+    string description = 4;
+    int32 percentage = 5;
+    int32 minimum_quantity = 6;
 }

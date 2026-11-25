@@ -50,6 +50,12 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
 
 # --- API ---
 
@@ -58,9 +64,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Database=Server=catalog.database;Port=5432;Database=eshop_catalog;User Id=postgres;Password=${POSTGRES_PASSWORD};Include Error Detail=true
     ports:
       - "6000:8080"
+      - "6060:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -73,16 +81,21 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
       - MongoDbSettings__ConnectionString=mongodb://mongo:${MONGO_PASSWORD}@basket.database:27017
       - RedisSettings__ConnectionString=basket.cache:6379,password=${REDIS_PASSWORD}
+      - GrpcSettings__DiscountUrl=https://discount.api:8081
     ports:
       - "6001:8080"
+      - "6061:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     depends_on:
-      basket.cache:
+      discount.api:
         condition: service_started
+      basket.cache:
+        condition: service_healthy
       basket.database:
         condition: service_healthy
 
@@ -91,9 +104,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Database=Data Source=/app/db/discountdb
     ports:
       - "6002:8080"
+      - "6062:8081"
     volumes:
       - ./discount_db:/app/db
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro

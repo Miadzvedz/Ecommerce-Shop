@@ -13,13 +13,6 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{25850452-FB78-44DC-8B35-BBB98699EA6D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "postman", "postman", "{C0F5B0E9-BAA5-4A2C-8B6B-F4CE1E67B556}"
-	ProjectSection(SolutionItems) = preProject
-		postman\Docker.postman_environment.json = postman\Docker.postman_environment.json
-		postman\Ecommerce-Shop.postman_collection.json = postman\Ecommerce-Shop.postman_collection.json
-		postman\Localhost.postman_environment.json = postman\Localhost.postman_environment.json
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CDD49D86-6C6E-469E-9CEB-1A67B5062B8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{E8939563-FC9A-400D-A8CD-21EE2C7AD469}"
