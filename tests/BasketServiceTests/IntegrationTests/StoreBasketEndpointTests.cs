@@ -23,7 +23,7 @@ public class StoreBasketEndpointTests(IntegrationFixture integrationFixture) : I
         var request = new StoreBasketRequest(cart);
         var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-        var coupons = new List<CouponModel>() { new() { ProductName = "LTD M300FM", Amount = 15 } };       
+        var coupons = new List<DiscountModel>() { new() { ProductName = "LTD M300FM", Percentage = 15, MinimumQuantity = 1 } };       
         SetupDiscountClientMock(coupons);
 
         //Act

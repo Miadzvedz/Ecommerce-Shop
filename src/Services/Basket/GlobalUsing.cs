@@ -24,3 +24,5 @@ global using FluentValidation.Results;
 global using Basket.API.Data;
 global using Discount.API.Protos;
 global using Grpc.Core;
+global using BuildingBlocks.Clients;
+global using static BuildingBlocks.Clients.IDiscountClient;

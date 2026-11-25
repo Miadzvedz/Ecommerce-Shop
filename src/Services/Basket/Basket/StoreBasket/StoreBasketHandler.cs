@@ -22,7 +22,7 @@ public class StoreBasketCommandHandler : AbstractValidator<StoreBasketCommand>
     }
 }
 
-internal class StoreBasketHandler(IBasketRepository repository, DiscountProtoService.DiscountProtoServiceClient discountClient) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
+internal class StoreBasketHandler(IBasketRepository repository, IDiscountClient discountClient) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
 {
     public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
     {
@@ -38,24 +38,17 @@ internal class StoreBasketHandler(IBasketRepository repository, DiscountProtoSer
     // applies a discount to the product if the quantity is greater than or equal to the minimum threshold (MinimumQuantity)
     private async Task ApplyDiscount(StoreBasketCommand command, CancellationToken cancellationToken = default)
     {
-        List<string> productIds = command.Cart.Items.Select(x => x.ProductId.ToString()).ToList(); 
-        GetDiscountsRequest request = new() { ProductIds = { productIds } };
+        List<string> productIds = command.Cart.Items.Select(x => x.ProductId.ToString()).ToList();
 
-        CallOptions options = new CallOptions()
-            .WithDeadline(DateTime.UtcNow.AddSeconds(3))
-            .WithCancellationToken(cancellationToken);
+        List<DiscountDto> discountList = await discountClient.GetDiscountsAsync(productIds, cancellationToken);
 
-        GetDiscountsResponse discountResponse = await discountClient.GetDiscountsAsync(request, options);
-
-
-        Dictionary<Guid, DiscountModel> dictionaryDiscount = discountResponse.Discounts
+        Dictionary<Guid, DiscountDto> dictionaryDiscount = discountList
             .Select(model => new {
                 IsValid = Guid.TryParse(model.ProductId, out var guid),
                 Guid = guid,
                 Model = model
             })
             .Where(x => x.IsValid)
-            .ToList()
             .ToDictionary(x => x.Guid, x => x.Model);
 
         foreach (var item in command.Cart.Items) 

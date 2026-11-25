@@ -1,3 +1,5 @@
+using Basket.API.Basket.StoreBasket;
+
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
 var dbSettings = builder.Configuration.GetRequiredSection(nameof(MongoDbSettings)).Get<MongoDbSettings>()!;
@@ -67,6 +69,7 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
     return handler;
 });
 
+builder.Services.AddScoped<IDiscountClient, DiscountClient>();
 builder.Services.AddHealthChecks()
     .AddMongoDb(dbSettings.ConnectionString!)
     .AddRedis(cacherSettings.ConnectionString!);

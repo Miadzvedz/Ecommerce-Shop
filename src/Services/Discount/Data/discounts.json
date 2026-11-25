@@ -4,27 +4,31 @@
     "ProductId": "05efe62c-4e7e-4e6d-92c8-3fa4b39ac67d",
     "ProductName": "Elixir 12077 Nanoweb Light-Heavy 10-52",
     "Description": "Discount for National Unity Day",
-    "Percentage": "15"
+    "Percentage": "15",
+    "MinimumQuantity": "3"
   },
   {
     "Id": "2",
     "ProductId": "c8634286-f0e2-42bf-8a31-d3632558866d",
     "ProductName": "Dunlop Tortex Standard 0.73 mm",
     "Description": "Valentine’s Day Discount",
-    "Percentage": "5"
+    "Percentage": "5",
+    "MinimumQuantity": "5"
   },
   {
     "Id": "3",
     "ProductId": "0c5e52ed-9984-4360-8d14-696fac78a1b8",
     "ProductName": "Ernie Ball 2833 Hybrid Slinky Bass 45-105",
     "Description": "Christmas Discount.",
-    "Percentage": "10"
+    "Percentage": "10",
+    "MinimumQuantity": "3"
   },
   {
     "Id": "4",
     "ProductId": "0a1873ad-5bce-4545-af0f-048f5be6da53",
     "ProductName": "Gibson 70s Flying V CW",
     "Description": "Independence Day Discount.",
-    "Percentage": "10"
+    "Percentage": "10",
+    "MinimumQuantity": "1"
   }
 ]
