@@ -45,6 +45,8 @@ public class MockApp : WebApplicationFactory<Program>
                 opt.GetDatabase("db").GetCollection<ShoppingCart>("baskets"));
 
             cfg.AddScoped<IBasketRepository, BasketRepository>();
+            cfg.AddScoped<IDiscountClient, DiscountClient>();
+            cfg.AddScoped<IDiscountCalculator, DiscountCalculator>();
 
             // remove real grpc client from basket.api 
             var descriptor = cfg.SingleOrDefault(d => d.ServiceType == typeof(DiscountProtoService.DiscountProtoServiceClient));
