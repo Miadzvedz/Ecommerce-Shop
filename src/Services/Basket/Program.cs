@@ -70,6 +70,8 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
 });
 
 builder.Services.AddScoped<IDiscountClient, DiscountClient>();
+builder.Services.AddScoped<IDiscountCalculator, DiscountCalculator>();
+
 builder.Services.AddHealthChecks()
     .AddMongoDb(dbSettings.ConnectionString!)
     .AddRedis(cacherSettings.ConnectionString!);
