@@ -14,14 +14,14 @@ public class DiscountCalculator : IDiscountCalculator
                 Guid = guid,
                 Model = model
             })
-            .Where(x => x.IsValid)
+            .Where(x => x.IsValid && x.Model.Percentage > 0)
             .ToDictionary(x => x.Guid, x => x.Model);
 
         foreach (var item in items)
         {
             if (dictionaryDiscount.TryGetValue(item.ProductId, out var discount))
             {
-                if (discount.MinimumQuantity >= item.Quantity)
+                if (discount.MinimumQuantity <= item.Quantity)
                 {
                     item.Price -= item.Price * (discount.Percentage / 100m);
                 }
