@@ -3,10 +3,14 @@
 public class StoreBasketHandlerTests
 {
     private readonly Mock<IBasketRepository> _repositoryMock;
+    private readonly Mock<IDiscountClient> _discountClientMock;
+    private readonly Mock<IDiscountCalculator> _discountCalcMock;
 
     public StoreBasketHandlerTests()
     {
         _repositoryMock = new Mock<IBasketRepository>();
+        _discountClientMock = new Mock<IDiscountClient>();
+        _discountCalcMock = new Mock<IDiscountCalculator>();
     }
 
 
@@ -22,9 +26,16 @@ public class StoreBasketHandlerTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ShoppingCart(cart.UserId));
 
-        var mockGrpcClient = new Mock<DiscountProtoService.DiscountProtoServiceClient>();
+        _discountClientMock.Setup(x => x.GetDiscountsAsync(
+                It.IsAny<List<string>>(),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new List<DiscountDto>());
 
-        var handler = new StoreBasketHandler(_repositoryMock.Object, mockGrpcClient.Object);
+        _discountCalcMock.Setup(x => x.ApplyDiscounts(
+               It.IsAny<IEnumerable<ShoppingCartItem>>(),
+               It.IsAny<IEnumerable<DiscountDto>>()));
+
+        var handler = new StoreBasketHandler(_repositoryMock.Object, _discountClientMock.Object, _discountCalcMock.Object);
 
         //Act
         var result = await handler.Handle(command, CancellationToken.None);

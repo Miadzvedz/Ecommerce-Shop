@@ -20,3 +20,5 @@ global using Newtonsoft.Json;
 global using System.Text;
 global using Discount.API.Protos;
 global using Grpc.Core;
+global using BuildingBlocks.Clients;
+global using static BuildingBlocks.Clients.IDiscountClient;
