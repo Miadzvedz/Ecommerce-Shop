@@ -361,13 +361,8 @@ Carter — это легковесный фреймворк с открытым 
 - Вместо него регистрируется заглушка (DiscountClientMock.Object).
 - Цель: изолировать тестируемый сервис от внешнего сервиса скидок (Discount API), чтобы тестировать только логику корзины и управлять ответами о скидках напрямую из тестов.
 
-<img width="857" height="319" alt="image" src="https://github.com/user-attachments/assets/3cd44505-24a0-47f0-85d9-571d3bf0e5a6" />
-<img width="606" height="560" alt="image" src="https://github.com/user-attachments/assets/b81be600-6296-43cd-a82b-ac861abb1e67" />
-
-
 
 Проверка конечных точек на соответствие ожидаемым статус-кодам.
-
 ![image](https://github.com/user-attachments/assets/3cb64d9e-f112-4ed9-9bce-dc6953e737a7)
 
 
