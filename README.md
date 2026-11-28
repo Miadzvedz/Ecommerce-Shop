@@ -361,12 +361,10 @@ Carter — это легковесный фреймворк с открытым 
 - Вместо него регистрируется заглушка (DiscountClientMock.Object).
 - Цель: изолировать тестируемый сервис от внешнего сервиса скидок (Discount API), чтобы тестировать только логику корзины и управлять ответами о скидках напрямую из тестов.
 
-[BasketServiceTests/](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/tests/BasketServiceTests) (корневой проект тестирования микросервиса корзины)
-└── IntegrationTests/ (папка интеграционных тестов API-эндпоинтов)
-    ├── DeleteBasketEndpointTests.cs (тесты удаления корзины пользователя из БД)
-    ├── GetBasketEndpointTests.cs (тесты получения корзины и проверки HTTP-ответов)
-    ├── IntegrationFixture.cs (настройка тестовой среды и фабрика MockApp с подменой MongoDB и gRPC-моком)
-    └── StoreBasketEndpointTests.cs (тесты создания/обновления корзины и расчёта скидок)
+<img width="857" height="319" alt="image" src="https://github.com/user-attachments/assets/3cd44505-24a0-47f0-85d9-571d3bf0e5a6" />
+<img width="606" height="560" alt="image" src="https://github.com/user-attachments/assets/b81be600-6296-43cd-a82b-ac861abb1e67" />
+
+
 
 Проверка конечных точек на соответствие ожидаемым статус-кодам.
 
