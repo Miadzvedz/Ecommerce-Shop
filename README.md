@@ -356,6 +356,18 @@ Carter — это легковесный фреймворк с открытым 
 Простыми словами создаётся временная база данных для тестирования и после тестирования она удаляется.
 [Mongo2Go README.md](https://github.com/Mongo2Go/Mongo2Go/blob/main/README.md)
 
+Мокирование внешнего gRPC-сервиса (Discount Service):
+- Из контейнера зависимостей удаляется регистрация реального gRPC-клиента DiscountProtoServiceClient.
+- Вместо него регистрируется заглушка (DiscountClientMock.Object).
+- Цель: изолировать тестируемый сервис от внешнего сервиса скидок (Discount API), чтобы тестировать только логику корзины и управлять ответами о скидках напрямую из тестов.
+
+[BasketServiceTests/](https://github.com/Miadzvedz/Ecommerce-Shop/tree/main/tests/BasketServiceTests) (корневой проект тестирования микросервиса корзины)
+└── IntegrationTests/ (папка интеграционных тестов API-эндпоинтов)
+    ├── DeleteBasketEndpointTests.cs (тесты удаления корзины пользователя из БД)
+    ├── GetBasketEndpointTests.cs (тесты получения корзины и проверки HTTP-ответов)
+    ├── IntegrationFixture.cs (настройка тестовой среды и фабрика MockApp с подменой MongoDB и gRPC-моком)
+    └── StoreBasketEndpointTests.cs (тесты создания/обновления корзины и расчёта скидок)
+
 Проверка конечных точек на соответствие ожидаемым статус-кодам.
 
 ![image](https://github.com/user-attachments/assets/3cb64d9e-f112-4ed9-9bce-dc6953e737a7)
